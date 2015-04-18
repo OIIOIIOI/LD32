@@ -27,8 +27,6 @@ class Protrotrype extends Scene {
 	var player:Player;
 	var gun:Gun;
 	
-	var tick:Float;
-	
 	public function new () {
 		super();
 		
@@ -51,18 +49,10 @@ class Protrotrype extends Scene {
 		gun = new Gun(player.x, player.y);
 		gun.updateColors(player.nextColor, player.currentColor);
 		add(gun);
-		
-		tick = 0;
 	}
 	
 	override public function update ()  {
 		super.update();
-		
-		/*tick += HXP.elapsed;
-		if (tick >= 3) {
-			spawnEnemy();
-			tick -= 3;
-		}*/
 		
 		// Player movement
 		Main.TAP.x = Main.TAP.y = 0;
@@ -74,6 +64,13 @@ class Protrotrype extends Scene {
 		player.dx += Main.TAP.x;
 		player.dy += Main.TAP.y;
 		
+		// Camera
+		Main.TAP.x = HXP.clamp(player.x - VIEW_WIDTH / 2, 0, level.width - VIEW_WIDTH);
+		Main.TAP.x = HXP.camera.x + (Main.TAP.x - HXP.camera.x) * 0.2;
+		Main.TAP.y = HXP.clamp(player.y - VIEW_HEIGHT / 2, 0, level.height - VIEW_HEIGHT);
+		Main.TAP.y = HXP.camera.y + (Main.TAP.y - HXP.camera.y) * 0.2;
+		HXP.setCamera(Main.TAP.x, Main.TAP.y);
+		
 		// Gun
 		gun.x = player.x;
 		gun.y = player.y;
@@ -84,6 +81,7 @@ class Protrotrype extends Scene {
 		// Shoot
 		if (Input.mousePressed) {
 			var b = new Bullet(player.x, player.y, player.currentColor);
+			trace("bullet @ " + b.x + ", " + b.y);
 			Main.TAP.x = this.mouseX - player.x;
 			Main.TAP.y = this.mouseY - player.y;
 			Main.TAP.normalize(b.speed);
@@ -100,11 +98,6 @@ class Protrotrype extends Scene {
 			player.swapColors();
 			gun.updateColors(player.nextColor, player.currentColor);
 		}
-	}
-	
-	function spawnEnemy () {
-		var e = new Enemy(Std.random(VIEW_WIDTH - 100) + 100, Std.random(VIEW_HEIGHT - 100) + 100);
-		add(e);
 	}
 	
 }
