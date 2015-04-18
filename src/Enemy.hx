@@ -57,14 +57,7 @@ class Enemy extends MovingEntity {
 			b = cast(e);
 			// Reflect bullet
 			if (b.color == color) {
-				b.x -= b.dx;
-				b.y -= b.dy;
-				b.speed *= 0.2;
-				Main.TAP.x = b.dx;
-				Main.TAP.y = b.dy;
-				Main.TAP.normalize(b.speed);
-				b.dx = -Main.TAP.x;
-				b.dy = -Main.TAP.y;
+				b.reflect();
 			}
 			// Get hit
 			else if (b.color == weakColor) {

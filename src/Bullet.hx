@@ -1,6 +1,7 @@
 package  ;
 
 import com.haxepunk.graphics.Spritemap;
+import com.haxepunk.HXP;
 import Protrotrype;
 
 /**
@@ -14,6 +15,8 @@ class Bullet extends MovingEntity {
 	static public var A_BLUE:String = "a_blue";
 	
 	@:isVar public var color(default, set):Color;
+	
+	var health:Float;
 	
 	public function new (x:Float=0, y:Float=0, c:Color) {
 		super(x, y);
@@ -35,15 +38,31 @@ class Bullet extends MovingEntity {
 		
 		centerOrigin();
 		
+		health = 0.5;
+		
 		color = c;
 	}
 	
 	override public function update () :Void {
 		super.update();
 		
-		if (right < 0 || left > Protrotrype.VIEW_WIDTH || bottom < 0 || top > Protrotrype.VIEW_HEIGHT) {
+		health -= HXP.elapsed;
+		
+		if (health <= 0 || right < 0 || left > Protrotrype.VIEW_WIDTH || bottom < 0 || top > Protrotrype.VIEW_HEIGHT) {
 			scene.remove(this);
 		}
+	}
+	
+	public function reflect () {
+		x -= dx;
+		y -= dy;
+		speed *= 0.33;
+		health = 0.5;
+		Main.TAP.x = dx;
+		Main.TAP.y = dy;
+		Main.TAP.normalize(speed);
+		dx = -Main.TAP.x;
+		dy = -Main.TAP.y;
 	}
 	
 	function set_color (c:Color) :Color {

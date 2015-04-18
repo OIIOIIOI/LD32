@@ -23,9 +23,10 @@ class Protrotrype extends Scene {
 	var bulletPool:BulletPool;
 	
 	var player:Player;
+	var gun:Gun;
 	
-	var currentBullet:Bullet;
-	var nextBullet:Bullet;
+	var currentColor:Color;
+	var nextColor:Color;
 	
 	var tick:Float;
 	
@@ -45,11 +46,11 @@ class Protrotrype extends Scene {
 		player = new Player(VIEW_WIDTH / 2, VIEW_HEIGHT / 2);
 		add(player);
 		
-		currentBullet = new Bullet(40, 16, bulletPool.getNext());
-		cast(currentBullet.graphic, Spritemap).scale = 1.5;
-		add(currentBullet);
-		nextBullet = new Bullet(16, 16, bulletPool.getNext());
-		add(nextBullet);
+		gun = new Gun(player.x, player.y);
+		add(gun);
+		
+		currentColor = bulletPool.getNext();
+		nextColor = bulletPool.getNext();
 		
 		tick = 0;
 	}
@@ -73,10 +74,17 @@ class Protrotrype extends Scene {
 		player.dx += Main.TAP.x;
 		player.dy += Main.TAP.y;
 		
+		// Gun
+		gun.x = player.x;
+		gun.y = player.y;
+		gun.layer = player.layer - 1;
+		var a = Math.atan2(player.y - this.mouseY, this.mouseX - player.x) * 180 / Math.PI;
+		cast(gun.graphic, Spritemap).angle = a;
+		
 		// Shoot
 		if (Input.mousePressed) {
 			var a = Math.atan2(player.y - this.mouseY, this.mouseX - player.x) * 180 / Math.PI;
-			var b = new Bullet(player.x, player.y, currentBullet.color);
+			var b = new Bullet(player.x, player.y, currentColor);
 			Main.TAP.x = this.mouseX - player.x;
 			Main.TAP.y = this.mouseY - player.y;
 			Main.TAP.normalize(b.speed);
@@ -84,24 +92,24 @@ class Protrotrype extends Scene {
 			b.dy = Main.TAP.y;
 			add(b);
 			
-			cycleBullets();
+			cycleColors();
 		}
 		
 		// Swap
 		if (Input.rightMousePressed) {
-			swapBullets();
+			swapColors();
 		}
 	}
 	
-	function cycleBullets () {
-		currentBullet.color = nextBullet.color;
-		nextBullet.color = bulletPool.getNext();
+	function cycleColors () {
+		currentColor = nextColor;
+		nextColor = bulletPool.getNext();
 	}
 	
-	function swapBullets () {
-		var c = currentBullet.color;
-		currentBullet.color = nextBullet.color;
-		nextBullet.color = c;
+	function swapColors () {
+		var c = currentColor;
+		currentColor = nextColor;
+		nextColor = c;
 	}
 	
 	function spawnEnemy () {
