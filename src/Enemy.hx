@@ -65,7 +65,7 @@ class Enemy extends MovingEntity {
 		
 		var b:Bullet;
 		var a:Array<Entity> = new Array();
-		collideInto(Protrotrype.T_BULLET, x, y, a);
+		collideInto(Protrotrype.T_PLAYER_BULLET, x, y, a);
 		for (e in a) {
 			b = cast(e);
 			// Reflect bullet
@@ -88,12 +88,9 @@ class Enemy extends MovingEntity {
 	function shoot () {
 		var player = scene.getInstance("player");
 		if (player != null) {
-			var b = new Bullet(x, y, color);
+			var b = new Bullet(x, y, color, false);
 			Main.TAP.x = player.x - x;
 			Main.TAP.y = player.y - y;
-			Main.TAP.normalize(32);
-			b.x += Main.TAP.x;
-			b.y += Main.TAP.y;
 			Main.TAP.normalize(b.speed);
 			b.dx = Main.TAP.x;
 			b.dy = Main.TAP.y;

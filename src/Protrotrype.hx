@@ -16,17 +16,13 @@ class Protrotrype extends Scene {
 	public static var VIEW_WIDTH:Int;
 	public static var VIEW_HEIGHT:Int;
 	
-	public static var T_BULLET:String = "t_bullet";
+	public static var T_PLAYER_BULLET:String = "t_player_bullet";
+	public static var T_ENEMY_BULLET:String = "t_enemy_bullet";
 	public static var T_PLAYER:String = "t_player";
 	public static var T_ENEMY:String = "t_enemy";
 	
-	var bulletPool:BulletPool;
-	
 	var player:Player;
 	var gun:Gun;
-	
-	var currentColor:Color;
-	var nextColor:Color;
 	
 	var tick:Float;
 	
@@ -41,16 +37,11 @@ class Protrotrype extends Scene {
 		Input.define("down", [Key.DOWN, Key.S]);
 		Input.define("left", [Key.LEFT, Key.Q, Key.A]);
 		
-		bulletPool = new BulletPool();
-		
 		player = new Player(VIEW_WIDTH / 2, VIEW_HEIGHT / 2);
 		add(player);
 		
-		currentColor = bulletPool.getNext();
-		nextColor = bulletPool.getNext();
-		
 		gun = new Gun(player.x, player.y);
-		gun.updateColors(nextColor, currentColor);
+		gun.updateColors(player.nextColor, player.currentColor);
 		add(gun);
 		
 		tick = 0;
@@ -84,7 +75,7 @@ class Protrotrype extends Scene {
 		
 		// Shoot
 		if (Input.mousePressed) {
-			var b = new Bullet(player.x, player.y, currentColor);
+			var b = new Bullet(player.x, player.y, player.currentColor);
 			Main.TAP.x = this.mouseX - player.x;
 			Main.TAP.y = this.mouseY - player.y;
 			Main.TAP.normalize(b.speed);
@@ -92,26 +83,15 @@ class Protrotrype extends Scene {
 			b.dy = Main.TAP.y;
 			add(b);
 			
-			cycleColors();
+			player.cycleColors();
+			gun.updateColors(player.nextColor, player.currentColor);
 		}
 		
 		// Swap
 		if (Input.rightMousePressed) {
-			swapColors();
+			player.swapColors();
+			gun.updateColors(player.nextColor, player.currentColor);
 		}
-	}
-	
-	function cycleColors () {
-		currentColor = nextColor;
-		nextColor = bulletPool.getNext();
-		gun.updateColors(nextColor, currentColor);
-	}
-	
-	function swapColors () {
-		var c = currentColor;
-		currentColor = nextColor;
-		nextColor = c;
-		gun.updateColors(nextColor, currentColor);
 	}
 	
 	function spawnEnemy () {

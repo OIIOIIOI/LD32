@@ -19,7 +19,7 @@ class Game extends Engine {
 		HXP.console.toggleKey = Key.TAB;*/
 		
 		HXP.screen.scale = 2;
-		HXP.screen.color = 0xD8D8D8;
+		HXP.screen.color = 0xCCCCCC;
 		
 		HXP.scene = new Protrotrype();
 	}
