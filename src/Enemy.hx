@@ -3,6 +3,7 @@ package ;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
+import haxe.Timer;
 import openfl.errors.Error;
 import Protrotrype;
 
@@ -76,6 +77,12 @@ class Enemy extends MovingEntity {
 				scene.remove(e);
 				scene.remove(this);
 				HXP.screen.shake(1, 0.2);
+				// Check if end of level
+				var enemies = cast(scene, Protrotrype).level.enemies;
+				enemies.remove(this);
+				if (enemies.length == 0) {
+					Timer.delay(cast(scene, Protrotrype).gameOver.bind(true), 1000);
+				}
 				break;
 			}
 			// Reflect bullet

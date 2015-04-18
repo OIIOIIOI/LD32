@@ -1,6 +1,8 @@
 package ;
 
+import com.haxepunk.Entity;
 import com.haxepunk.graphics.Spritemap;
+import com.haxepunk.graphics.Text;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 import com.haxepunk.utils.Input;
@@ -26,16 +28,22 @@ class Protrotrype extends Scene {
 	var player:Player;
 	var gun:Gun;
 	
+	var camCoeff:Float;
+	var gameRunning:Bool;
+	
 	public function new () {
 		super();
 		
 		HXP.screen.scale = 2;
 		
-		VIEW_WIDTH = Std.int(HXP.screen.width / HXP.screen.scale);
-		VIEW_HEIGHT = Std.int(HXP.screen.height / HXP.screen.scale);
+		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
+		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
 		
-		level = new Level(1);
+		level = new Level(2);
 		for (e in level.entities) {
+			add(e);
+		}
+		for (e in level.enemies) {
 			add(e);
 		}
 		
@@ -45,54 +53,83 @@ class Protrotrype extends Scene {
 		gun = new Gun(player.x, player.y);
 		gun.updateColors(player.nextColor, player.currentColor);
 		add(gun);
+		
+		camCoeff = 0.2;
+		gameRunning = true;
 	}
 	
 	override public function update ()  {
 		super.update();
 		
-		// Player movement
-		Main.TAP.x = Main.TAP.y = 0;
-		if (Input.check("up"))		Main.TAP.y -= player.speed * HXP.elapsed;
-		if (Input.check("right"))	Main.TAP.x += player.speed * HXP.elapsed;
-		if (Input.check("down"))	Main.TAP.y += player.speed * HXP.elapsed;
-		if (Input.check("left"))	Main.TAP.x -= player.speed * HXP.elapsed;
-		Main.TAP.normalize(player.speed);
-		player.dx += Main.TAP.x;
-		player.dy += Main.TAP.y;
+		if (gameRunning) {
+			// Player movement
+			Main.TAP.x = Main.TAP.y = 0;
+			if (Input.check("up"))		Main.TAP.y -= player.speed * HXP.elapsed;
+			if (Input.check("right"))	Main.TAP.x += player.speed * HXP.elapsed;
+			if (Input.check("down"))	Main.TAP.y += player.speed * HXP.elapsed;
+			if (Input.check("left"))	Main.TAP.x -= player.speed * HXP.elapsed;
+			Main.TAP.normalize(player.speed);
+			player.dx += Main.TAP.x;
+			player.dy += Main.TAP.y;
+			
+			// Gun
+			gun.x = player.x;
+			gun.y = player.y;
+			gun.layer = player.layer - 1;
+			var a = Math.atan2(player.y - this.mouseY, this.mouseX - player.x) * 180 / Math.PI;
+			cast(gun.graphic, Spritemap).angle = a;
+			
+			// Shoot
+			if (Input.mousePressed) {
+				var b = new Bullet(player.x, player.y, player.currentColor);
+				Main.TAP.x = this.mouseX - player.x;
+				Main.TAP.y = this.mouseY - player.y;
+				Main.TAP.normalize(b.speed);
+				b.dx = Main.TAP.x;
+				b.dy = Main.TAP.y;
+				add(b);
+				
+				player.cycleColors();
+				gun.updateColors(player.nextColor, player.currentColor);
+			}
+			
+			// Swap
+			if (Input.rightMousePressed) {
+				player.swapColors();
+				gun.updateColors(player.nextColor, player.currentColor);
+			}
+		} else {
+			if (HXP.screen.scale > 1) {
+				HXP.screen.scale *= 0.97;
+				VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
+				VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
+			} else if (HXP.screen.scale < 1) {
+				HXP.screen.scale = 1;
+				VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
+				VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
+				
+				var title = new Text("Level cleared");
+				title.font = "fonts/MANIFESTO.ttf";
+				title.color = 0x000000;
+				title.size = 60;
+				title.centerOrigin();
+				var e = new Entity(HXP.halfWidth, HXP.halfHeight, title);
+				e.layer = -9999;
+				add(e);
+			}
+		}
 		
 		// Camera
+		Main.TAP.x = HXP.camera.x + (Main.TAP.x - HXP.camera.x) * camCoeff;
 		Main.TAP.x = HXP.clamp(player.x - VIEW_WIDTH / 2, 0, level.width - VIEW_WIDTH);
-		Main.TAP.x = HXP.camera.x + (Main.TAP.x - HXP.camera.x) * 0.2;
+		Main.TAP.y = HXP.camera.y + (Main.TAP.y - HXP.camera.y) * camCoeff;
 		Main.TAP.y = HXP.clamp(player.y - VIEW_HEIGHT / 2, 0, level.height - VIEW_HEIGHT);
-		Main.TAP.y = HXP.camera.y + (Main.TAP.y - HXP.camera.y) * 0.2;
 		HXP.setCamera(Std.int(Main.TAP.x), Std.int(Main.TAP.y));
-		
-		// Gun
-		gun.x = player.x;
-		gun.y = player.y;
-		gun.layer = player.layer - 1;
-		var a = Math.atan2(player.y - this.mouseY, this.mouseX - player.x) * 180 / Math.PI;
-		cast(gun.graphic, Spritemap).angle = a;
-		
-		// Shoot
-		if (Input.mousePressed) {
-			var b = new Bullet(player.x, player.y, player.currentColor);
-			Main.TAP.x = this.mouseX - player.x;
-			Main.TAP.y = this.mouseY - player.y;
-			Main.TAP.normalize(b.speed);
-			b.dx = Main.TAP.x;
-			b.dy = Main.TAP.y;
-			add(b);
-			
-			player.cycleColors();
-			gun.updateColors(player.nextColor, player.currentColor);
-		}
-		
-		// Swap
-		if (Input.rightMousePressed) {
-			player.swapColors();
-			gun.updateColors(player.nextColor, player.currentColor);
-		}
+	}
+	
+	public function gameOver (win:Bool) {
+		camCoeff = 0.05;
+		gameRunning = false;
 	}
 	
 }

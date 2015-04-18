@@ -19,6 +19,8 @@ class Level {
 	public var height:Int;
 	
 	public var entities(default, null):Array<Entity>;
+	public var enemies(default, null):Array<Entity>;
+	
 	public var startingPos(default, null):Point;
 	
 	var data:BitmapData;
@@ -28,6 +30,7 @@ class Level {
 		if (data == null)	throw new Error("Level not found");
 		
 		entities = new Array();
+		enemies = new Array();
 		startingPos = new Point();
 		
 		width = data.width * GRID_SIZE;
@@ -42,13 +45,13 @@ class Level {
 					entities.push(e);
 				} else if (p == 0xFF0000) {
 					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
-					entities.push(e);
+					enemies.push(e);
 				} else if (p == 0xFFFF00) {
 					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
-					entities.push(e);
+					enemies.push(e);
 				} else if (p == 0x0000FF) {
 					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
-					entities.push(e);
+					enemies.push(e);
 				} else if (p == 0x00FF00) {
 					startingPos.x = xx * GRID_SIZE;
 					startingPos.y = yy * GRID_SIZE;

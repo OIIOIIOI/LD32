@@ -84,6 +84,8 @@ class MenuScreen extends Scene {
 	}
 	
 	function startGame () {
+		removeAll();
+		
 		HXP.scene = new Protrotrype();
 	}
 	
