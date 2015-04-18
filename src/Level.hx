@@ -40,7 +40,7 @@ class Level {
 				if (p == 0x000000) {
 					e = new Wall(xx * GRID_SIZE, yy * GRID_SIZE);
 					entities.push(e);
-				} /*else if (p == 0xFF0000) {
+				} else if (p == 0xFF0000) {
 					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
 					entities.push(e);
 				} else if (p == 0xFFFF00) {
@@ -49,7 +49,7 @@ class Level {
 				} else if (p == 0x0000FF) {
 					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
 					entities.push(e);
-				} */else if (p == 0x00FF00) {
+				} else if (p == 0x00FF00) {
 					startingPos.x = xx * GRID_SIZE;
 					startingPos.y = yy * GRID_SIZE;
 				}

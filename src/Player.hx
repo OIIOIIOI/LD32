@@ -22,7 +22,7 @@ class Player extends MovingEntity {
 		speed = 0.8;
 		friction = 0.8;
 		
-		setHitbox(20, 20, -10, -10);
+		setHitbox(30, 20, -15, -10);
 		type = Protrotrype.T_PLAYER;
 		
 		name = "player";

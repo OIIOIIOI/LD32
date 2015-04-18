@@ -18,6 +18,7 @@ class Enemy extends MovingEntity {
 	@:isVar public var color(default, set):Color;
 	var weakColor:Color;
 	
+	var fovRadius:Int;
 	var shootInterval:Float;
 	var shootTick:Float;
 	
@@ -50,6 +51,7 @@ class Enemy extends MovingEntity {
 		}
 		color = c;
 		
+		fovRadius = 256;
 		shootInterval = 2 + Std.random(7) / 3;
 		shootTick = 0;
 	}
@@ -89,13 +91,19 @@ class Enemy extends MovingEntity {
 	function shoot () {
 		var player = scene.getInstance("player");
 		if (player != null) {
-			var b = new Bullet(x, y, color, false);
-			Main.TAP.x = player.x - x;
-			Main.TAP.y = player.y - y;
-			Main.TAP.normalize(b.speed);
-			b.dx = Main.TAP.x;
-			b.dy = Main.TAP.y;
-			scene.add(b);
+			// Check view distance
+			if (HXP.distance(x, y, player.x, player.y) > fovRadius)	return;
+			// Check line of sight
+			var block = scene.collideLine(Protrotrype.T_WALLS, Std.int(x), Std.int(y), Std.int(player.x), Std.int(player.y), 4);
+			if (block == null) {
+				var b = new Bullet(x, y, color, false);
+				Main.TAP.x = player.x - x;
+				Main.TAP.y = player.y - y;
+				Main.TAP.normalize(b.speed);
+				b.dx = Main.TAP.x;
+				b.dy = Main.TAP.y;
+				scene.add(b);
+			}
 		}
 	}
 	

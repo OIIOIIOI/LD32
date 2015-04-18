@@ -16,7 +16,7 @@ class Wall extends Entity {
 	public function new (x:Float=0, y:Float=0) {
 		super(x, y);
 		
-		setHitbox(44, 28, 6, -2);
+		setHitbox(32, 28, 0, -2);
 		type = Protrotrype.T_WALLS;
 		
 		spritemap = new Spritemap("img/walls.png", Level.GRID_SIZE, Level.GRID_SIZE);

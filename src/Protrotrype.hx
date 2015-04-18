@@ -81,7 +81,6 @@ class Protrotrype extends Scene {
 		// Shoot
 		if (Input.mousePressed) {
 			var b = new Bullet(player.x, player.y, player.currentColor);
-			trace("bullet @ " + b.x + ", " + b.y);
 			Main.TAP.x = this.mouseX - player.x;
 			Main.TAP.y = this.mouseY - player.y;
 			Main.TAP.normalize(b.speed);
