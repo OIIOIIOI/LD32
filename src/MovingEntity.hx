@@ -27,12 +27,21 @@ class MovingEntity extends Entity {
 	}
 	
 	override public function update () :Void {
+		collision();
+		
 		x += dx;
 		dx *= friction;
+		if (Math.abs(dx) < 0.01)	dx = 0;
+		
 		y += dy;
 		dy *= friction;
+		if (Math.abs(dy) < 0.01)	dy = 0;
 		
 		layer = -Std.int(y);
+	}
+	
+	function collision () {
+		
 	}
 	
 }

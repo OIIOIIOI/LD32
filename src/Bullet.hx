@@ -30,7 +30,7 @@ class Bullet extends MovingEntity {
 		
 		if (!mine) {
 			type = Protrotrype.T_ENEMY_BULLET;
-			speed = 4;
+			speed = 3;
 		} else {
 			type = Protrotrype.T_PLAYER_BULLET;
 			speed = 8;
@@ -70,7 +70,7 @@ class Bullet extends MovingEntity {
 		
 		if (type == Protrotrype.T_PLAYER_BULLET) {
 			type = Protrotrype.T_ENEMY_BULLET;
-			speed = 4;
+			speed = 3;
 		} else {
 			type = Protrotrype.T_PLAYER_BULLET;
 			//speed = 8;

@@ -22,7 +22,7 @@ class Player extends MovingEntity {
 		speed = 0.8;
 		friction = 0.8;
 		
-		setHitbox(32, 32, -16, -16);
+		setHitbox(20, 20, -10, -10);
 		type = Protrotrype.T_PLAYER;
 		
 		name = "player";
@@ -62,6 +62,31 @@ class Player extends MovingEntity {
 			}
 		}
 		a = null;
+	}
+	
+	override function collision ()  {
+		// Outer walls collision
+		if (left + dx < 0 || right + dx > cast(scene, Protrotrype).level.width) {
+			dx = 0;
+		}
+		if (top + dy < 0 || bottom + dy > cast(scene, Protrotrype).level.height) {
+			dy = 0;
+		}
+		// Inner walls collision
+		if (dx != 0 || dy != 0) {
+			if (collide(Protrotrype.T_WALLS, x + dx, y + dy) == null) {
+				//x += dx;
+				//y += dy;
+			} else if (collide(Protrotrype.T_WALLS, x + dx, y) == null) {
+				//x += dx;
+				dy = 0;
+			} else if (collide(Protrotrype.T_WALLS, x, y + dy) == null) {
+				dx = 0;
+				//y += dy;
+			} else {
+				dx = dy = 0;
+			}
+		}
 	}
 	
 	public function cycleColors () {

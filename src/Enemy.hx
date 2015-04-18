@@ -30,7 +30,7 @@ class Enemy extends MovingEntity {
 		setHitbox(32, 32, -16, -16);
 		type = Protrotrype.T_ENEMY;
 		
-		spritemap = new Spritemap("img/enemies.png", 32, 32);
+		spritemap = new Spritemap("img/enemies_alt.png", 32, 32);
 		spritemap.add(A_YELLOW, [0]);
 		spritemap.add(A_BLUE, [1]);
 		spritemap.add(A_RED, [2]);

@@ -20,6 +20,9 @@ class Protrotrype extends Scene {
 	public static var T_ENEMY_BULLET:String = "t_enemy_bullet";
 	public static var T_PLAYER:String = "t_player";
 	public static var T_ENEMY:String = "t_enemy";
+	public static var T_WALLS:String = "t_walls";
+	
+	public var level:Level;
 	
 	var player:Player;
 	var gun:Gun;
@@ -37,7 +40,12 @@ class Protrotrype extends Scene {
 		Input.define("down", [Key.DOWN, Key.S]);
 		Input.define("left", [Key.LEFT, Key.Q, Key.A]);
 		
-		player = new Player(VIEW_WIDTH / 2, VIEW_HEIGHT / 2);
+		level = new Level(1);
+		for (e in level.entities) {
+			add(e);
+		}
+		
+		player = new Player(level.startingPos.x, level.startingPos.y);
 		add(player);
 		
 		gun = new Gun(player.x, player.y);
@@ -50,11 +58,11 @@ class Protrotrype extends Scene {
 	override public function update ()  {
 		super.update();
 		
-		tick += HXP.elapsed;
+		/*tick += HXP.elapsed;
 		if (tick >= 3) {
 			spawnEnemy();
 			tick -= 3;
-		}
+		}*/
 		
 		// Player movement
 		Main.TAP.x = Main.TAP.y = 0;
