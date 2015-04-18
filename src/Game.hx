@@ -3,6 +3,7 @@ package ;
 import com.haxepunk.Engine;
 import com.haxepunk.HXP;
 import com.haxepunk.RenderMode;
+import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 
 /**
@@ -18,10 +19,16 @@ class Game extends Engine {
 		HXP.console.debugDraw = true;
 		HXP.console.toggleKey = Key.TAB;
 		
-		HXP.screen.scale = 2;
 		HXP.screen.color = 0xCCCCCC;
 		
-		HXP.scene = new Protrotrype();
+		Input.define("up", [Key.UP, Key.Z, Key.W]);
+		Input.define("right", [Key.RIGHT, Key.D]);
+		Input.define("down", [Key.DOWN, Key.S]);
+		Input.define("left", [Key.LEFT, Key.Q, Key.A]);
+		Input.define("enter", [Key.SPACE, Key.ENTER, Key.NUMPAD_ENTER]);
+		
+		//HXP.scene = new Protrotrype();
+		HXP.scene = new MenuScreen();
 	}
 	
 }

@@ -4,7 +4,6 @@ import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 import com.haxepunk.utils.Input;
-import com.haxepunk.utils.Key;
 import Bullet;
 
 /**
@@ -30,13 +29,10 @@ class Protrotrype extends Scene {
 	public function new () {
 		super();
 		
+		HXP.screen.scale = 2;
+		
 		VIEW_WIDTH = Std.int(HXP.screen.width / HXP.screen.scale);
 		VIEW_HEIGHT = Std.int(HXP.screen.height / HXP.screen.scale);
-		
-		Input.define("up", [Key.UP, Key.Z, Key.W]);
-		Input.define("right", [Key.RIGHT, Key.D]);
-		Input.define("down", [Key.DOWN, Key.S]);
-		Input.define("left", [Key.LEFT, Key.Q, Key.A]);
 		
 		level = new Level(1);
 		for (e in level.entities) {
