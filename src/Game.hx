@@ -14,9 +14,9 @@ class Game extends Engine {
 	public function new () {
 		super(1000, 600);
 		
-		HXP.console.enable();
+		/*HXP.console.enable();
 		HXP.console.debugDraw = true;
-		HXP.console.toggleKey = Key.TAB;
+		HXP.console.toggleKey = Key.TAB;*/
 		
 		HXP.screen.scale = 2;
 		HXP.screen.color = 0xCCCCCC;

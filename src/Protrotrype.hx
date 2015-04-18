@@ -69,7 +69,7 @@ class Protrotrype extends Scene {
 		Main.TAP.x = HXP.camera.x + (Main.TAP.x - HXP.camera.x) * 0.2;
 		Main.TAP.y = HXP.clamp(player.y - VIEW_HEIGHT / 2, 0, level.height - VIEW_HEIGHT);
 		Main.TAP.y = HXP.camera.y + (Main.TAP.y - HXP.camera.y) * 0.2;
-		HXP.setCamera(Main.TAP.x, Main.TAP.y);
+		HXP.setCamera(Std.int(Main.TAP.x), Std.int(Main.TAP.y));
 		
 		// Gun
 		gun.x = player.x;
@@ -105,4 +105,5 @@ enum Color {
 	RED;
 	YELLOW;
 	BLUE;
+	WHITE;
 }

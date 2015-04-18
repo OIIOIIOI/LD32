@@ -13,9 +13,11 @@ class Bullet extends MovingEntity {
 	static public var A_RED:String = "a_red";
 	static public var A_YELLOW:String = "a_yellow";
 	static public var A_BLUE:String = "a_blue";
+	static public var A_WHITE:String = "a_white";
 	static public var A_PLAYER_RED:String = "a_player_red";
 	static public var A_PLAYER_YELLOW:String = "a_player_yellow";
 	static public var A_PLAYER_BLUE:String = "a_player_blue";
+	static public var A_PLAYER_WHITE:String = "a_player_white";
 	
 	@:isVar public var color(default, set):Color;
 	
@@ -40,9 +42,11 @@ class Bullet extends MovingEntity {
 		spritemap.add(A_RED, [0]);
 		spritemap.add(A_YELLOW, [1]);
 		spritemap.add(A_BLUE, [2]);
-		spritemap.add(A_PLAYER_RED, [3]);
-		spritemap.add(A_PLAYER_YELLOW, [4]);
-		spritemap.add(A_PLAYER_BLUE, [5]);
+		spritemap.add(A_WHITE, [3]);
+		spritemap.add(A_PLAYER_RED, [4]);
+		spritemap.add(A_PLAYER_YELLOW, [5]);
+		spritemap.add(A_PLAYER_BLUE, [6]);
+		spritemap.add(A_PLAYER_WHITE, [7]);
 		spritemap.originX = 8;
 		spritemap.originY = 8;
 		
@@ -86,7 +90,7 @@ class Bullet extends MovingEntity {
 		dx = -Main.TAP.x;
 		dy = -Main.TAP.y;
 		
-		color = color;
+		color = Color.WHITE;
 	}
 	
 	function set_color (c:Color) :Color {
@@ -96,12 +100,14 @@ class Bullet extends MovingEntity {
 				case Color.RED:			spritemap.play(A_PLAYER_RED);
 				case Color.YELLOW:		spritemap.play(A_PLAYER_YELLOW);
 				case Color.BLUE:		spritemap.play(A_PLAYER_BLUE);
+				case Color.WHITE:		spritemap.play(A_PLAYER_WHITE);
 			}
 		} else {
 			switch (color) {
 				case Color.RED:			spritemap.play(A_RED);
 				case Color.YELLOW:		spritemap.play(A_YELLOW);
 				case Color.BLUE:		spritemap.play(A_BLUE);
+				case Color.WHITE:		spritemap.play(A_WHITE);
 			}
 		}
 		return color;

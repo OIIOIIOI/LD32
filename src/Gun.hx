@@ -49,11 +49,13 @@ class Gun extends Entity {
 			case Color.RED: "r";
 			case Color.BLUE: "b";
 			case Color.YELLOW: "y";
+			default: "";// Unsupported
 		}
 		a += switch (c2) {
 			case Color.RED: "r";
 			case Color.BLUE: "b";
 			case Color.YELLOW: "y";
+			default: "";// Unsupported
 		}
 		spritemap.play(a);
 	}

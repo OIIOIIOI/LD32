@@ -3,6 +3,7 @@ package ;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
+import openfl.errors.Error;
 import Protrotrype;
 
 /**
@@ -70,19 +71,16 @@ class Enemy extends MovingEntity {
 		collideInto(Protrotrype.T_PLAYER_BULLET, x, y, a);
 		for (e in a) {
 			b = cast(e);
-			// Reflect bullet
-			if (b.color == color) {
-				b.reflect();
-			}
 			// Get hit
-			else if (b.color == weakColor) {
+			if (b.color == weakColor || b.color == Color.WHITE) {
 				scene.remove(e);
 				scene.remove(this);
 				HXP.screen.shake(1, 0.2);
+				break;
 			}
-			// Stop bullet
+			// Reflect bullet
 			else {
-				scene.remove(e);
+				b.reflect();
 			}
 		}
 		a = null;
@@ -119,6 +117,8 @@ class Enemy extends MovingEntity {
 			case Color.BLUE:
 				weakColor = Color.YELLOW;
 				spritemap.play(A_BLUE);
+			default:
+				throw new Error("Unsupported value");
 		}
 		return color;
 	}
