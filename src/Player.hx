@@ -15,6 +15,7 @@ class Player extends MovingEntity {
 		friction = 0.8;
 		
 		setHitbox(32, 32, -16, -16);
+		type = Protrotrype.T_PLAYER;
 		
 		spritemap = new Spritemap("img/player.png", 32, 32);
 		spritemap.add(MovingEntity.A_IDLE, [0]);

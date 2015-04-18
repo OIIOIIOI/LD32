@@ -16,12 +16,18 @@ class Protrotrype extends Scene {
 	public static var VIEW_WIDTH:Int;
 	public static var VIEW_HEIGHT:Int;
 	
+	public static var T_BULLET:String = "t_bullet";
+	public static var T_PLAYER:String = "t_player";
+	public static var T_ENEMY:String = "t_enemy";
+	
 	var bulletPool:BulletPool;
 	
 	var player:Player;
 	
 	var currentBullet:Bullet;
 	var nextBullet:Bullet;
+	
+	var tick:Float;
 	
 	public function new () {
 		super();
@@ -44,10 +50,18 @@ class Protrotrype extends Scene {
 		add(currentBullet);
 		nextBullet = new Bullet(16, 16, bulletPool.getNext());
 		add(nextBullet);
+		
+		tick = 0;
 	}
 	
 	override public function update ()  {
 		super.update();
+		
+		tick += HXP.elapsed;
+		if (tick >= 3) {
+			spawnEnemy();
+			tick -= 3;
+		}
 		
 		// Player movement
 		Main.TAP.x = Main.TAP.y = 0;
@@ -90,4 +104,15 @@ class Protrotrype extends Scene {
 		nextBullet.color = c;
 	}
 	
+	function spawnEnemy () {
+		var e = new Enemy(Std.random(VIEW_WIDTH - 100) + 100, Std.random(VIEW_HEIGHT - 100) + 100);
+		add(e);
+	}
+	
+}
+
+enum Color {
+	RED;
+	YELLOW;
+	BLUE;
 }

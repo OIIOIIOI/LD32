@@ -1,6 +1,7 @@
 package  ;
 
 import com.haxepunk.graphics.Spritemap;
+import Protrotrype;
 
 /**
  * ...
@@ -12,15 +13,16 @@ class Bullet extends MovingEntity {
 	static public var A_YELLOW:String = "a_yellow";
 	static public var A_BLUE:String = "a_blue";
 	
-	@:isVar public var color(get, set):BulletColor;
+	@:isVar public var color(default, set):Color;
 	
-	public function new (x:Float=0, y:Float=0, c:BulletColor) {
+	public function new (x:Float=0, y:Float=0, c:Color) {
 		super(x, y);
 		
 		speed = 8;
 		friction = 1;
 		
 		setHitbox(16, 16, -8, -8);
+		type = Protrotrype.T_BULLET;
 		
 		spritemap = new Spritemap("img/bullets.png", 16, 16);
 		spritemap.add(A_RED, [0]);
@@ -36,24 +38,22 @@ class Bullet extends MovingEntity {
 		color = c;
 	}
 	
-	function get_color () :BulletColor {
-		return color;
+	override public function update () :Void {
+		super.update();
+		
+		if (right < 0 || left > Protrotrype.VIEW_WIDTH || bottom < 0 || top > Protrotrype.VIEW_HEIGHT) {
+			scene.remove(this);
+		}
 	}
 	
-	function set_color (c:BulletColor) :BulletColor {
+	function set_color (c:Color) :Color {
 		color = c;
 		switch (color) {
-			case RED:		spritemap.play(A_RED);
-			case YELLOW:	spritemap.play(A_YELLOW);
-			case BLUE:		spritemap.play(A_BLUE);
+			case Color.RED:			spritemap.play(A_RED);
+			case Color.YELLOW:		spritemap.play(A_YELLOW);
+			case Color.BLUE:		spritemap.play(A_BLUE);
 		}
 		return color;
 	}
 	
-}
-
-enum BulletColor {
-	RED;
-	YELLOW;
-	BLUE;
 }

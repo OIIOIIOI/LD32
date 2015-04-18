@@ -1,6 +1,7 @@
 package ;
 
 import Bullet;
+import Protrotrype;
 
 /**
  * ...
@@ -8,7 +9,7 @@ import Bullet;
  */
 class BulletPool {
 	
-	var list:Array<BulletColor>;
+	var list:Array<Color>;
 	
 	public function new () {
 		list = new Array();
@@ -18,14 +19,14 @@ class BulletPool {
 	function fill () {
 		for (i in 0...10) {
 			list.push(switch (Std.random(3)) {
-				case 0:		BulletColor.BLUE;
-				case 1:		BulletColor.RED;
-				default:	BulletColor.YELLOW;
+				case 0:		Color.BLUE;
+				case 1:		Color.RED;
+				default:	Color.YELLOW;
 			});
 		}
 	}
 	
-	public function getNext () :BulletColor {
+	public function getNext () :Color {
 		if (list.length == 0)	fill();
 		return list.shift();
 	}
