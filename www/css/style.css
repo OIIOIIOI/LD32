@@ -1,4 +1,7 @@
 
-.navbar-nav li {
-	font-size: 1.2em;
+body {
+	padding-top: 15px;
+}
+#game {
+	text-align: center;
 }
