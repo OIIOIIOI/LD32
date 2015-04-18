@@ -46,11 +46,12 @@ class Protrotrype extends Scene {
 		player = new Player(VIEW_WIDTH / 2, VIEW_HEIGHT / 2);
 		add(player);
 		
-		gun = new Gun(player.x, player.y);
-		add(gun);
-		
 		currentColor = bulletPool.getNext();
 		nextColor = bulletPool.getNext();
+		
+		gun = new Gun(player.x, player.y);
+		gun.updateColors(nextColor, currentColor);
+		add(gun);
 		
 		tick = 0;
 	}
@@ -83,7 +84,6 @@ class Protrotrype extends Scene {
 		
 		// Shoot
 		if (Input.mousePressed) {
-			var a = Math.atan2(player.y - this.mouseY, this.mouseX - player.x) * 180 / Math.PI;
 			var b = new Bullet(player.x, player.y, currentColor);
 			Main.TAP.x = this.mouseX - player.x;
 			Main.TAP.y = this.mouseY - player.y;
@@ -104,12 +104,14 @@ class Protrotrype extends Scene {
 	function cycleColors () {
 		currentColor = nextColor;
 		nextColor = bulletPool.getNext();
+		gun.updateColors(nextColor, currentColor);
 	}
 	
 	function swapColors () {
 		var c = currentColor;
 		currentColor = nextColor;
 		nextColor = c;
+		gun.updateColors(nextColor, currentColor);
 	}
 	
 	function spawnEnemy () {

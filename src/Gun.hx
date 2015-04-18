@@ -2,6 +2,7 @@ package ;
 
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Spritemap;
+import Protrotrype;
 
 /**
  * ...
@@ -40,6 +41,21 @@ class Gun extends Entity {
 		addGraphic(spritemap);
 		
 		centerOrigin();
+	}
+	
+	public function updateColors (c1:Color, c2:Color) {
+		var a = "a_";
+		a += switch (c1) {
+			case Color.RED: "r";
+			case Color.BLUE: "b";
+			case Color.YELLOW: "y";
+		}
+		a += switch (c2) {
+			case Color.RED: "r";
+			case Color.BLUE: "b";
+			case Color.YELLOW: "y";
+		}
+		spritemap.play(a);
 	}
 	
 }

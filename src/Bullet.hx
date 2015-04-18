@@ -38,7 +38,7 @@ class Bullet extends MovingEntity {
 		
 		centerOrigin();
 		
-		health = 0.5;
+		health = 2;
 		
 		color = c;
 	}
@@ -46,7 +46,7 @@ class Bullet extends MovingEntity {
 	override public function update () :Void {
 		super.update();
 		
-		health -= HXP.elapsed;
+		//health -= HXP.elapsed;
 		
 		if (health <= 0 || right < 0 || left > Protrotrype.VIEW_WIDTH || bottom < 0 || top > Protrotrype.VIEW_HEIGHT) {
 			scene.remove(this);
@@ -57,7 +57,7 @@ class Bullet extends MovingEntity {
 		x -= dx;
 		y -= dy;
 		speed *= 0.33;
-		health = 0.5;
+		health--;
 		Main.TAP.x = dx;
 		Main.TAP.y = dy;
 		Main.TAP.normalize(speed);

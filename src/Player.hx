@@ -17,6 +17,8 @@ class Player extends MovingEntity {
 		setHitbox(32, 32, -16, -16);
 		type = Protrotrype.T_PLAYER;
 		
+		name = "player";
+		
 		spritemap = new Spritemap("img/player.png", 32, 32);
 		spritemap.add(MovingEntity.A_IDLE, [0]);
 		spritemap.originX = 16;

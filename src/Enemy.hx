@@ -2,6 +2,7 @@ package ;
 
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Spritemap;
+import com.haxepunk.HXP;
 import Protrotrype;
 
 /**
@@ -16,6 +17,9 @@ class Enemy extends MovingEntity {
 	
 	@:isVar public var color(default, set):Color;
 	var weakColor:Color;
+	
+	var shootInterval:Float;
+	var shootTick:Float;
 	
 	public function new (x:Float=0, y:Float=0, ?c:Color) {
 		super(x, y);
@@ -45,10 +49,19 @@ class Enemy extends MovingEntity {
 			}
 		}
 		color = c;
+		
+		shootInterval = 2 + Std.random(7) / 3;
+		shootTick = 0;
 	}
 	
 	override public function update () :Void {
 		super.update();
+		
+		shootTick += HXP.elapsed;
+		if (shootTick >= shootInterval) {
+			shoot();
+			shootTick -= shootInterval;
+		}
 		
 		var b:Bullet;
 		var a:Array<Entity> = new Array();
@@ -70,6 +83,22 @@ class Enemy extends MovingEntity {
 			}
 		}
 		a = null;
+	}
+	
+	function shoot () {
+		var player = scene.getInstance("player");
+		if (player != null) {
+			var b = new Bullet(x, y, color);
+			Main.TAP.x = player.x - x;
+			Main.TAP.y = player.y - y;
+			Main.TAP.normalize(32);
+			b.x += Main.TAP.x;
+			b.y += Main.TAP.y;
+			Main.TAP.normalize(b.speed);
+			b.dx = Main.TAP.x;
+			b.dy = Main.TAP.y;
+			scene.add(b);
+		}
 	}
 	
 	function set_color (c:Color) :Color {
