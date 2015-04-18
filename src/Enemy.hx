@@ -76,6 +76,7 @@ class Enemy extends MovingEntity {
 			else if (b.color == weakColor) {
 				scene.remove(e);
 				scene.remove(this);
+				HXP.screen.shake(1, 0.2);
 			}
 			// Stop bullet
 			else {

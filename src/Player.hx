@@ -57,8 +57,8 @@ class Player extends MovingEntity {
 			}
 			// Get hit
 			else {
-				HXP.screen.shake(3, 0.2);
 				scene.remove(e);
+				HXP.screen.shake(3, 0.2);
 			}
 		}
 		a = null;

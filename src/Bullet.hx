@@ -24,11 +24,17 @@ class Bullet extends MovingEntity {
 	public function new (x:Float=0, y:Float=0, c:Color, mine:Bool = true) {
 		super(x, y);
 		
-		speed = 8;
 		friction = 1;
 		
 		setHitbox(16, 16, -8, -8);
-		type = (mine) ? Protrotrype.T_PLAYER_BULLET : Protrotrype.T_ENEMY_BULLET;
+		
+		if (!mine) {
+			type = Protrotrype.T_ENEMY_BULLET;
+			speed = 4;
+		} else {
+			type = Protrotrype.T_PLAYER_BULLET;
+			speed = 8;
+		}
 		
 		spritemap = new Spritemap("img/bullets.png", 16, 16);
 		spritemap.add(A_RED, [0]);
@@ -61,15 +67,21 @@ class Bullet extends MovingEntity {
 	
 	public function reflect () {
 		health--;// Lose health (limits number of bounces)
-		speed *= 0.5;// Slow down
+		
+		if (type == Protrotrype.T_PLAYER_BULLET) {
+			type = Protrotrype.T_ENEMY_BULLET;
+			speed = 4;
+		} else {
+			type = Protrotrype.T_PLAYER_BULLET;
+			//speed = 8;
+		}
+		
 		Main.TAP.x = dx;
 		Main.TAP.y = dy;
 		Main.TAP.normalize(speed);
 		dx = -Main.TAP.x;
 		dy = -Main.TAP.y;
 		
-		if (type == Protrotrype.T_PLAYER_BULLET)	type = Protrotrype.T_ENEMY_BULLET;
-		else										type = Protrotrype.T_PLAYER_BULLET;
 		color = color;
 	}
 	
