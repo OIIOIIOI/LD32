@@ -77,7 +77,7 @@ class Enemy extends MovingEntity {
 				cast(scene, Protrotrype).particles.bulletHit(b);
 				scene.remove(b);
 				scene.remove(this);
-				HXP.screen.shake(1, 0.2);
+				HXP.screen.shake(3, 0.2);
 				// Check if end of level
 				var enemies = cast(scene, Protrotrype).level.enemies;
 				cast(scene, Protrotrype).level.paintBlood(this);

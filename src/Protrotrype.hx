@@ -26,7 +26,7 @@ class Protrotrype extends Scene {
 	public var level:Level;
 	
 	var player:Player;
-	var gun:Gun;
+	//var gun:Gun;
 	
 	var camCoeff:Float;
 	var gameRunning:Bool;
@@ -52,9 +52,9 @@ class Protrotrype extends Scene {
 		player = new Player(level.startingPos.x, level.startingPos.y);
 		add(player);
 		
-		gun = new Gun(player.x, player.y);
+		/*gun = new Gun(player.x, player.y);
 		gun.updateColors(player.nextColor, player.currentColor);
-		add(gun);
+		add(gun);*/
 		
 		particles = new ParticleMan();
 		add(particles);
@@ -78,11 +78,11 @@ class Protrotrype extends Scene {
 			player.dy += Main.TAP.y;
 			
 			// Gun
-			gun.x = player.x;
+			/*gun.x = player.x;
 			gun.y = player.y;
 			gun.layer = player.layer - 1;
 			var a = Math.atan2(player.y - this.mouseY, this.mouseX - player.x) * 180 / Math.PI;
-			cast(gun.graphic, Spritemap).angle = a;
+			cast(gun.graphic, Spritemap).angle = a;*/
 			
 			// Shoot
 			if (Input.mousePressed) {
@@ -95,13 +95,13 @@ class Protrotrype extends Scene {
 				add(b);
 				
 				player.cycleColors();
-				gun.updateColors(player.nextColor, player.currentColor);
+				//gun.updateColors(player.nextColor, player.currentColor);
 			}
 			
 			// Swap
 			if (Input.rightMousePressed) {
 				player.swapColors();
-				gun.updateColors(player.nextColor, player.currentColor);
+				//gun.updateColors(player.nextColor, player.currentColor);
 			}
 			
 			// Camera
