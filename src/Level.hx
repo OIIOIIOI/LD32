@@ -30,13 +30,9 @@ class Level {
 	public var floor:Entity;
 	public var floorData:BitmapData;
 	
-	//static var bloodStains:Array<BitmapData>;
-	
 	public function new (n:Int) {
 		data = Assets.getBitmapData("img/level" + n + ".png");
 		if (data == null)	throw new Error("Level not found");
-		
-		//if (bloodStains == null)	initBloodStains();
 		
 		entities = new Array();
 		enemies = new Array();
@@ -45,7 +41,7 @@ class Level {
 		width = data.width * GRID_SIZE;
 		height = data.height * GRID_SIZE;
 		
-		var fd = Assets.getBitmapData("img/floor.png");
+		var fd = Assets.getBitmapData("img/desert_floor.png");
 		floorData = new BitmapData(width, height, false, 0xFFFFFFFF);
 		for (yy in 0...Math.ceil(height / fd.height)) {
 			Main.TAP.y = yy * fd.height;
@@ -55,7 +51,6 @@ class Level {
 			}
 		}
 		floor = new Entity(0, 0, new Image(floorData));
-		//entities.push(floor);
 		
 		var p:UInt = 0;
 		var e:Entity = null;
@@ -63,9 +58,10 @@ class Level {
 			for (xx in 0...data.width) {
 				p = data.getPixel(xx, yy);
 				if (p == 0x000000) {
-					var full = data.getPixel(xx, yy + 1) == 0x000000;
-					var top = full && data.getPixel(xx, yy - 1) != 0x000000;
-					e = new Wall(xx * GRID_SIZE, yy * GRID_SIZE, full, top);
+					//var full = data.getPixel(xx, yy + 1) == 0x000000;
+					//var top = full && data.getPixel(xx, yy - 1) != 0x000000;
+					//var both = data.getPixel(xx, yy + 1) != 0x000000 && data.getPixel(xx, yy - 1) != 0x000000;
+					e = new Wall(xx * GRID_SIZE, yy * GRID_SIZE, data.getPixel(xx, yy + 1), data.getPixel(xx, yy - 1));
 					entities.push(e);
 				} else if (p == 0xFF0000) {
 					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
@@ -85,47 +81,12 @@ class Level {
 				} else if (p == 0x00FF00) {
 					startingPos.x = xx * GRID_SIZE;
 					startingPos.y = yy * GRID_SIZE;
+				} else if (p != 0xFFFFFF) {
+					e = new DesertStuff(xx * GRID_SIZE, yy * GRID_SIZE, p);
+					entities.push(e);
 				}
 			}
 		}
 	}
-	
-	/*public function initBloodStains () {
-		bloodStains = new Array();
-		var bd = Assets.getBitmapData("img/blood.png");
-		var hor = Std.int(bd.width / 40);
-		var ver = Std.int(bd.height / 32);
-		var stain:BitmapData;
-		Main.TAP.x = Main.TAP.y = 0;
-		Main.TAR.width = 40;
-		Main.TAR.height = 32;
-		for (yy in 0...ver) {
-			Main.TAR.y = yy * 32;
-			for (xx in 0...hor) {
-				Main.TAR.x = xx * 40;
-				stain = new BitmapData(40, 32, true, 0x00000000);
-				stain.copyPixels(bd, Main.TAR, Main.TAP);
-				bloodStains.push(stain);
-			}
-		}
-	}
-	
-	public function paintBlood (e:Enemy, n:Int = 12) {
-		for (i in 0...n) {
-			Main.TAP.x = e.x - Std.random(40);
-			Main.TAP.y = e.y - Std.random(40);
-			var index = switch (e.weakColor) {
-				case Color.RED:		0;
-				case Color.YELLOW:	3;
-				default:			6;
-			}
-			index = 9;// temp override
-			index += Std.random(3);
-			floorData.copyPixels(bloodStains[index], bloodStains[index].rect, Main.TAP, null, null, true);
-		}
-		floor.graphic.destroy();
-		floor.graphic = null;
-		floor.graphic = new Image(floorData);
-	}*/
 	
 }

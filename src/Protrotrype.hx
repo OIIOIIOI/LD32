@@ -85,6 +85,10 @@ class Protrotrype extends Scene {
 		gameRunning = true;
 	}
 	
+	function reset () {
+		
+	}
+	
 	override public function update ()  {
 		super.update();
 		
@@ -145,7 +149,9 @@ class Protrotrype extends Scene {
 	}
 	
 	public function gameOver (win:Bool) {
-		//gameRunning = false;
+		gameRunning = false;
+		
+		removeAll();
 		
 		/*HXP.screen.scale = 1;
 		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);

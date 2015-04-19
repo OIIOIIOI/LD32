@@ -13,6 +13,8 @@ import Protrotrype;
  */
 class Player extends MovingEntity {
 	
+	static public var ORIG_Y:Int = 19;
+	
 	static public var A_R:String = "a_r";
 	static public var A_Y:String = "a_y";
 	static public var A_B:String = "a_b";
@@ -49,7 +51,7 @@ class Player extends MovingEntity {
 		var shadow = new Image("img/shadow.png");
 		shadow.centerOrigin();
 		shadow.x = 3;
-		shadow.y = 19;
+		shadow.y = ORIG_Y;
 		shadow.alpha = 0.3;
 		addGraphic(shadow);
 		
@@ -70,7 +72,7 @@ class Player extends MovingEntity {
 		spritemap.add(A_HIT, [5, 6, 5, 6], 4, false);
 		spritemap.add(A_DEATH, [5, 6, 5, 6, 7, 8, 9, 10, 11], 4, false);
 		spritemap.originX = 16;
-		spritemap.originY = 19;
+		spritemap.originY = ORIG_Y;
 		spritemap.play(MovingEntity.A_IDLE);
 		addGraphic(spritemap);
 		

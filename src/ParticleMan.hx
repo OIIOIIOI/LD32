@@ -24,9 +24,9 @@ class ParticleMan extends Entity {
 	public function new () {
 		super();
 		
-		walkEmitter = new Emitter("img/sand_part.png", 8, 8);
-		walkEmitter.newType("sand_part", [0, 1, 2, 3]);
-		walkEmitter.setAlpha("sand_part", 1, 0);
+		walkEmitter = new Emitter("img/desert_walk_part.png", 8, 8);
+		walkEmitter.newType("desert_walk_part", [0, 1, 2, 3]);
+		walkEmitter.setAlpha("desert_walk_part", 1, 0);
 		addGraphic(walkEmitter);
 		walkTick = 0;
 		
@@ -70,8 +70,8 @@ class ParticleMan extends Entity {
 		if (walkTick % 5 != 0)	return;
 		
 		var a = Math.atan2(e.dy, -e.dx) * 180 / Math.PI;
-		walkEmitter.setMotion("sand_part", a, 8, 1, 0, 4, 0, Ease.quadOut);
-		walkEmitter.emitInCircle("sand_part", e.centerX, e.bottom + 4, 8);
+		walkEmitter.setMotion("desert_walk_part", a, 8, 1, 0, 4, 0, Ease.quadOut);
+		walkEmitter.emitInCircle("desert_walk_part", e.centerX, e.bottom + 4, 8);
 	}
 	
 	public function bloodStains (e:Enemy) {
