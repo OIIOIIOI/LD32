@@ -5,6 +5,7 @@ import com.haxepunk.HXP;
 import com.haxepunk.RenderMode;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
+import openfl.ui.Mouse;
 
 /**
  * ...
@@ -29,6 +30,8 @@ class Game extends Engine {
 		
 		HXP.scene = new Protrotrype();
 		//HXP.scene = new MenuScreen();
+		
+		//Mouse.hide();
 	}
 	
 }

@@ -103,15 +103,16 @@ class Level {
 		}
 	}
 	
-	public function paintBlood (e:Enemy, n:Int = 3) {
+	public function paintBlood (e:Enemy, n:Int = 12) {
 		for (i in 0...n) {
-			Main.TAP.x = e.x - Std.random(20);
-			Main.TAP.y = e.y - Std.random(20);
+			Main.TAP.x = e.x - Std.random(40);
+			Main.TAP.y = e.y - Std.random(40);
 			var index = switch (e.weakColor) {
 				case Color.RED:		0;
 				case Color.YELLOW:	3;
 				default:			6;
 			}
+			index = 9;// temp override
 			index += Std.random(3);
 			floorData.copyPixels(bloodStains[index], bloodStains[index].rect, Main.TAP, null, null, true);
 		}

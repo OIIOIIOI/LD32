@@ -4,6 +4,7 @@ import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
+import haxe.Timer;
 import Protrotrype;
 
 /**
@@ -18,6 +19,7 @@ class Player extends MovingEntity {
 	
 	static public var A_WALK:String = "a_walk";
 	static public var A_HIT:String = "a_hit";
+	static public var A_DEATH:String = "a_death";
 	
 	var gunSpritemap:Spritemap;
 	var reserveSpritemap:Spritemap;
@@ -25,6 +27,8 @@ class Player extends MovingEntity {
 	var bulletPool:BulletPool;
 	public var currentColor(default, null):Color;
 	public var nextColor(default, null):Color;
+	
+	public var health(default, null):Int;
 	
 	public function new (x:Float=0, y:Float=0) {
 		super(x, y);
@@ -40,6 +44,8 @@ class Player extends MovingEntity {
 		type = Protrotrype.T_PLAYER;
 		
 		name = "player";
+		
+		health = 3;
 		
 		// Shadow
 		var shadow = new Image("img/shadow.png");
@@ -63,7 +69,8 @@ class Player extends MovingEntity {
 		spritemap = new Spritemap("img/hero_sprites_01.png", 32, 38);
 		spritemap.add(MovingEntity.A_IDLE, [3]);
 		spritemap.add(A_WALK, [0, 1, 0, 1, 0, 1, 0, 1, 2, 1], 5);
-		spritemap.add(A_HIT, [5, 6, 5, 6], 5, false);
+		spritemap.add(A_HIT, [5, 6, 5, 6], 4, false);
+		spritemap.add(A_DEATH, [5, 6, 5, 6, 7, 8, 9, 10, 11], 4, false);
 		spritemap.originX = 16;
 		spritemap.originY = 19;
 		spritemap.play(MovingEntity.A_IDLE);
@@ -85,11 +92,19 @@ class Player extends MovingEntity {
 		updateColors();
 	}
 	
+	public function isStunned () :Bool {
+		return (spritemap.currentAnim == A_HIT);
+	}
+	
+	public function isDead () :Bool {
+		return (health <= 0);
+	}
+	
 	override public function update () :Void {
 		super.update();
 		
 		// Animation
-		if (spritemap.currentAnim != A_HIT || spritemap.complete) {
+		if (spritemap.currentAnim != A_DEATH && (spritemap.currentAnim != A_HIT || spritemap.complete)) {
 			if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5)	spritemap.play(A_WALK);
 			else											spritemap.play(MovingEntity.A_IDLE);
 		}
@@ -105,29 +120,39 @@ class Player extends MovingEntity {
 			}
 			// Get hit
 			else {
-				spritemap.play(A_HIT, true);
+				health--;
 				cast(scene, Protrotrype).particles.bulletHit(b);
 				scene.remove(e);
-				//HXP.screen.shake(8, 0.6);
-				HXP.screen.shake(5, 0.3);
+				if (health <= 0) {
+					HXP.screen.shake(8, 0.6);
+					spritemap.play(A_DEATH);
+					gunSpritemap.alpha = 0;
+					reserveSpritemap.alpha = 0;
+					Timer.delay(cast(scene, Protrotrype).gameOver.bind(false), 1000);
+				} else {
+					HXP.screen.shake(5, 0.3);
+					spritemap.play(A_HIT);
+				}
 			}
 		}
 		a = null;
 		
 		// Gun rotation and sprite flipping
-		var an = Math.atan2(y - scene.mouseY, scene.mouseX - x) * 180 / Math.PI;
-		if (an < 90 && an > -90) {
-			reserveSpritemap.originX = 16;
-			spritemap.flipped = false;
-			gunSpritemap.flipped = false;
-			gunSpritemap.angle = an;
-			gunSpritemap.x = 5;
-		} else {
-			reserveSpritemap.originX = -8;
-			spritemap.flipped = true;
-			gunSpritemap.flipped = true;
-			gunSpritemap.angle = an + 180;
-			gunSpritemap.x = -5;
+		if (!isStunned() && !isDead()) {
+			var an = Math.atan2(y - scene.mouseY, scene.mouseX - x) * 180 / Math.PI;
+			if (an < 90 && an > -90) {
+				reserveSpritemap.originX = 16;
+				spritemap.flipped = false;
+				gunSpritemap.flipped = false;
+				gunSpritemap.angle = an;
+				gunSpritemap.x = 5;
+			} else {
+				reserveSpritemap.originX = -8;
+				spritemap.flipped = true;
+				gunSpritemap.flipped = true;
+				gunSpritemap.angle = an + 180;
+				gunSpritemap.x = -5;
+			}
 		}
 	}
 	

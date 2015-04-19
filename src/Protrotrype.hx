@@ -1,6 +1,7 @@
 package ;
 
 import com.haxepunk.Entity;
+import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.graphics.Text;
 import com.haxepunk.HXP;
@@ -32,6 +33,8 @@ class Protrotrype extends Scene {
 	
 	public var particles(default, null):ParticleMan;
 	
+	var cursor:Entity;
+	
 	public function new () {
 		super();
 		
@@ -53,6 +56,10 @@ class Protrotrype extends Scene {
 		
 		particles = new ParticleMan();
 		add(particles);
+		
+		cursor = new Entity(0, 0, new Image("img/cursor.png"));
+		cursor.layer = -99999;
+		add(cursor);
 		
 		camCoeff = 0.2;
 		gameRunning = true;
@@ -104,6 +111,9 @@ class Protrotrype extends Scene {
 		
 		// Particles
 		if (Math.abs(player.dx) > 0.5 || Math.abs(player.dy) > 0.5)	particles.walk(player);
+		
+		cursor.x = mouseX - 6;
+		cursor.y = mouseY - 6;
 	}
 	
 	public function gameOver (win:Bool) {

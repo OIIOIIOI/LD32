@@ -1,6 +1,7 @@
 package ;
 
 import com.haxepunk.Entity;
+import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
 import haxe.Timer;
@@ -16,6 +17,11 @@ class Enemy extends MovingEntity {
 	static public var A_RED:String = "a_red";
 	static public var A_YELLOW:String = "a_yellow";
 	static public var A_BLUE:String = "a_blue";
+	
+	static public var A_RED_IDLE:String = "a_red_idle";
+	static public var A_RED_WALK:String = "a_red_walk";
+	static public var A_RED_SHOOT:String = "a_red_shoot";
+	static public var A_RED_DEAD:String = "a_red_dead";
 	
 	@:isVar public var color(default, set):Color;
 	public var weakColor(default, null):Color;
@@ -33,12 +39,33 @@ class Enemy extends MovingEntity {
 		setHitbox(32, 32, -16, -16);
 		type = Protrotrype.T_ENEMY;
 		
-		spritemap = new Spritemap("img/enemies_alt.png", 32, 32);
-		spritemap.add(A_YELLOW, [0]);
-		spritemap.add(A_BLUE, [1]);
-		spritemap.add(A_RED, [2]);
-		spritemap.originX = 16;
-		spritemap.originY = 16;
+		// Shadow
+		var shadow = new Image("img/shadow.png");
+		shadow.centerOrigin();
+		shadow.x = 3;
+		shadow.y = 19;
+		shadow.alpha = 0.3;
+		addGraphic(shadow);
+		
+		// Anim
+		switch (c) {
+			case Color.RED:
+				spritemap = new Spritemap("img/skeleton_sprites_01.png", 32, 38);
+				spritemap.add(A_RED_IDLE, [0, 1], 5);
+				spritemap.add(A_RED_WALK, [1, 2], 5);
+				spritemap.add(A_RED_SHOOT, [3]);
+				spritemap.add(A_RED_DEAD, [4]);
+				spritemap.originX = 16;
+				spritemap.originY = 19;
+				spritemap.play(A_RED_IDLE);
+			default:
+				spritemap = new Spritemap("img/enemies_alt.png", 32, 32);
+				spritemap.add(A_YELLOW, [0]);
+				spritemap.add(A_BLUE, [1]);
+				spritemap.add(A_RED, [2]);
+				spritemap.originX = 16;
+				spritemap.originY = 16;
+		}
 		
 		addGraphic(spritemap);
 		
@@ -97,7 +124,7 @@ class Enemy extends MovingEntity {
 	
 	function shoot () {
 		var player = scene.getInstance("player");
-		if (player != null) {
+		if (player != null && !cast(player, Player).isStunned()) {
 			// Check view distance
 			if (HXP.distance(x, y, player.x, player.y) > fovRadius)	return;
 			// Check line of sight
@@ -119,13 +146,13 @@ class Enemy extends MovingEntity {
 		switch (color) {
 			case Color.RED:
 				weakColor = Color.BLUE;
-				spritemap.play(A_RED);
+				//spritemap.play(A_RED);
 			case Color.YELLOW:
 				weakColor = Color.RED;
-				spritemap.play(A_YELLOW);
+				//spritemap.play(A_YELLOW);
 			case Color.BLUE:
 				weakColor = Color.YELLOW;
-				spritemap.play(A_BLUE);
+				//spritemap.play(A_BLUE);
 			default:
 				throw new Error("Unsupported value");
 		}
