@@ -23,6 +23,7 @@ class ParticleMan extends Entity {
 		
 		walkEmitter = new Emitter("img/sand_part.png", 8, 8);
 		walkEmitter.newType("sand_part", [0, 1, 2, 3]);
+		walkEmitter.setAlpha("sand_part", 1, 0);
 		addGraphic(walkEmitter);
 		walkTick = 0;
 		

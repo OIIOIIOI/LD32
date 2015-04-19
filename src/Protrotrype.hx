@@ -26,7 +26,6 @@ class Protrotrype extends Scene {
 	public var level:Level;
 	
 	var player:Player;
-	//var gun:Gun;
 	
 	var camCoeff:Float;
 	var gameRunning:Bool;
@@ -41,7 +40,7 @@ class Protrotrype extends Scene {
 		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
 		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
 		
-		level = new Level(2);
+		level = new Level(3);
 		for (e in level.entities) {
 			add(e);
 		}
@@ -51,10 +50,6 @@ class Protrotrype extends Scene {
 		
 		player = new Player(level.startingPos.x, level.startingPos.y);
 		add(player);
-		
-		/*gun = new Gun(player.x, player.y);
-		gun.updateColors(player.nextColor, player.currentColor);
-		add(gun);*/
 		
 		particles = new ParticleMan();
 		add(particles);
@@ -77,31 +72,26 @@ class Protrotrype extends Scene {
 			player.dx += Main.TAP.x;
 			player.dy += Main.TAP.y;
 			
-			// Gun
-			/*gun.x = player.x;
-			gun.y = player.y;
-			gun.layer = player.layer - 1;
-			var a = Math.atan2(player.y - this.mouseY, this.mouseX - player.x) * 180 / Math.PI;
-			cast(gun.graphic, Spritemap).angle = a;*/
-			
 			// Shoot
 			if (Input.mousePressed) {
-				var b = new Bullet(player.x, player.y, player.currentColor);
 				Main.TAP.x = this.mouseX - player.x;
-				Main.TAP.y = this.mouseY - player.y;
+				Main.TAP.y = this.mouseY - player.y + 8;
+				Main.TAP.normalize(16);
+				var b = new Bullet(player.x + Main.TAP.x, player.y + 8 + Main.TAP.y, player.currentColor);
 				Main.TAP.normalize(b.speed);
 				b.dx = Main.TAP.x;
 				b.dy = Main.TAP.y;
 				add(b);
-				
+				// Recoil
+				Main.TAP.normalize(3);
+				player.dx -= Main.TAP.x;
+				player.dy -= Main.TAP.y;
 				player.cycleColors();
-				//gun.updateColors(player.nextColor, player.currentColor);
 			}
 			
 			// Swap
 			if (Input.rightMousePressed) {
 				player.swapColors();
-				//gun.updateColors(player.nextColor, player.currentColor);
 			}
 			
 			// Camera
@@ -119,11 +109,11 @@ class Protrotrype extends Scene {
 	public function gameOver (win:Bool) {
 		gameRunning = false;
 		
-		HXP.screen.scale = 1;
+		/*HXP.screen.scale = 1;
 		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
-		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
+		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);*/
 		
-		HXP.setCamera(-(VIEW_WIDTH - level.width)/2, -(VIEW_HEIGHT - level.height)/2);
+		/*HXP.setCamera(-(VIEW_WIDTH - level.width)/2, -(VIEW_HEIGHT - level.height)/2);
 		
 		var title = new Text("Level cleared");
 		title.font = "fonts/MANIFESTO.ttf";
@@ -132,7 +122,7 @@ class Protrotrype extends Scene {
 		title.centerOrigin();
 		var e = new Entity(HXP.halfWidth - HXP.camera.x / 4, HXP.halfHeight, title);
 		e.layer = -9999;
-		add(e);
+		add(e);*/
 	}
 	
 }
