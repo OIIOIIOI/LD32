@@ -19,7 +19,7 @@ class Game extends Engine {
 		HXP.console.debugDraw = true;
 		HXP.console.toggleKey = Key.TAB;
 		
-		HXP.screen.color = 0xCCCCCC;
+		HXP.screen.color = 0xAF8F69;
 		
 		Input.define("up", [Key.UP, Key.Z, Key.W]);
 		Input.define("right", [Key.RIGHT, Key.D]);

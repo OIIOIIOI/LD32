@@ -41,7 +41,7 @@ class Protrotrype extends Scene {
 		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
 		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
 		
-		level = new Level(1);
+		level = new Level(2);
 		for (e in level.entities) {
 			add(e);
 		}
@@ -103,41 +103,36 @@ class Protrotrype extends Scene {
 				player.swapColors();
 				gun.updateColors(player.nextColor, player.currentColor);
 			}
-		} else {
-			if (HXP.screen.scale > 1) {
-				HXP.screen.scale *= 0.97;
-				VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
-				VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
-			} else if (HXP.screen.scale < 1) {
-				HXP.screen.scale = 1;
-				VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
-				VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
-				
-				var title = new Text("Level cleared");
-				title.font = "fonts/MANIFESTO.ttf";
-				title.color = 0x000000;
-				title.size = 60;
-				title.centerOrigin();
-				var e = new Entity(HXP.halfWidth, HXP.halfHeight, title);
-				e.layer = -9999;
-				add(e);
-			}
+			
+			// Camera
+			Main.TAP.x = HXP.camera.x + (Main.TAP.x - HXP.camera.x) * camCoeff;
+			Main.TAP.x = HXP.clamp(player.x - VIEW_WIDTH / 2, 0, level.width - VIEW_WIDTH);
+			Main.TAP.y = HXP.camera.y + (Main.TAP.y - HXP.camera.y) * camCoeff;
+			Main.TAP.y = HXP.clamp(player.y - VIEW_HEIGHT / 2, 0, level.height - VIEW_HEIGHT);
+			HXP.setCamera(Std.int(Main.TAP.x), Std.int(Main.TAP.y));
 		}
-		
-		// Camera
-		Main.TAP.x = HXP.camera.x + (Main.TAP.x - HXP.camera.x) * camCoeff;
-		Main.TAP.x = HXP.clamp(player.x - VIEW_WIDTH / 2, 0, level.width - VIEW_WIDTH);
-		Main.TAP.y = HXP.camera.y + (Main.TAP.y - HXP.camera.y) * camCoeff;
-		Main.TAP.y = HXP.clamp(player.y - VIEW_HEIGHT / 2, 0, level.height - VIEW_HEIGHT);
-		HXP.setCamera(Std.int(Main.TAP.x), Std.int(Main.TAP.y));
 		
 		// Particles
 		if (Math.abs(player.dx) > 0.5 || Math.abs(player.dy) > 0.5)	particles.walk(player);
 	}
 	
 	public function gameOver (win:Bool) {
-		camCoeff = 0.05;
 		gameRunning = false;
+		
+		HXP.screen.scale = 1;
+		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
+		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
+		
+		HXP.setCamera(-(VIEW_WIDTH - level.width)/2, -(VIEW_HEIGHT - level.height)/2);
+		
+		var title = new Text("Level cleared");
+		title.font = "fonts/MANIFESTO.ttf";
+		title.color = 0x000000;
+		title.size = 60;
+		title.centerOrigin();
+		var e = new Entity(HXP.halfWidth - HXP.camera.x / 4, HXP.halfHeight, title);
+		e.layer = -9999;
+		add(e);
 	}
 	
 }

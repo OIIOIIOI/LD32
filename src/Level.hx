@@ -46,7 +46,7 @@ class Level {
 		height = data.height * GRID_SIZE;
 		
 		var fd = Assets.getBitmapData("img/floor.png");
-		floorData = new BitmapData(Math.ceil(width / fd.width) * fd.width, Math.ceil(height / fd.height) * fd.height, false, 0xFFFFFFFF);
+		floorData = new BitmapData(width, height, false, 0xFFFFFFFF);
 		for (yy in 0...Math.ceil(height / fd.height)) {
 			Main.TAP.y = yy * fd.height;
 			for (xx in 0...Math.ceil(width / fd.width)) {

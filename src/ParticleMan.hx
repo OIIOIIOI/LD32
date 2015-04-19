@@ -29,6 +29,7 @@ class ParticleMan extends Entity {
 		bulletHitEmitter = new Emitter("img/hit_part.png", 8, 8);
 		bulletHitEmitter.newType("hit_part", [0, 1, 2, 3]);
 		bulletHitEmitter.setAlpha("hit_part", 1, 0);
+		bulletHitEmitter.setGravity("hit_part", 2);
 		addGraphic(bulletHitEmitter);
 		
 		layer = -9999;
@@ -45,7 +46,7 @@ class ParticleMan extends Entity {
 		var a = Math.atan2(b.dy, -b.dx) * 180 / Math.PI;
 		for (i in 0...10) {
 			bulletHitEmitter.setColor("hit_part", c, c);
-			bulletHitEmitter.setMotion("hit_part", a - 45, 32, 0.8, 90, 16, 0.4, Ease.quadOut);
+			bulletHitEmitter.setMotion("hit_part", a - 45, 32, 0.4, 90, 16, 0.4, Ease.quadOut);
 			bulletHitEmitter.emit("hit_part", b.x, b.y);
 		}
 	}
