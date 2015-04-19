@@ -31,7 +31,7 @@ class Game extends Engine {
 		HXP.scene = new Protrotrype();
 		//HXP.scene = new MenuScreen();
 		
-		//Mouse.hide();
+		Mouse.hide();
 	}
 	
 }

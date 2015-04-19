@@ -35,7 +35,8 @@ class Protrotrype extends Scene {
 	var camCoeff:Float;
 	var gameRunning:Bool;
 	
-	var cursor:Entity;
+	var cursor:Cursor;
+	
 	public var scoreText:ScoreText;
 	
 	public function new () {
@@ -71,8 +72,8 @@ class Protrotrype extends Scene {
 		player = new Player(level.startingPos.x, level.startingPos.y);
 		add(player);
 		
-		cursor = new Entity(0, 0, new Image("img/cursor.png"));
-		cursor.layer = -99999;
+		cursor = new Cursor();
+		cursor.changeColor(player.currentColor);
 		add(cursor);
 		
 		scoreText = new ScoreText();
@@ -113,6 +114,7 @@ class Protrotrype extends Scene {
 				player.dx -= Main.TAP.x;
 				player.dy -= Main.TAP.y;
 				player.cycleColors();
+				cursor.changeColor(player.currentColor);
 				// Shake
 				HXP.screen.shake(1, 0.2);
 			}
@@ -120,6 +122,7 @@ class Protrotrype extends Scene {
 			// Swap
 			if (Input.rightMousePressed) {
 				player.swapColors();
+				cursor.changeColor(player.currentColor);
 			}
 			
 			// Camera
