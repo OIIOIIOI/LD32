@@ -118,7 +118,6 @@ class Enemy extends MovingEntity {
 					var enemies = cast(scene, Protrotrype).level.enemies;
 					//cast(scene, Protrotrype).level.paintBlood(this);
 					cast(scene, Protrotrype).particles.bloodStains(this);
-					trace(this.layer);
 					enemies.remove(this);
 					if (enemies.length == 0) {
 						Timer.delay(cast(scene, Protrotrype).gameOver.bind(true), 1000);
@@ -161,7 +160,7 @@ class Enemy extends MovingEntity {
 					default:	spritemap.play(A_SHOOT);
 				}
 				
-				var b = new Bullet(x, y, color, false);
+				var b = new Bullet(x, y, weakColor, false);
 				Main.TAP.x = player.x - x;
 				Main.TAP.y = player.y - y;
 				Main.TAP.normalize(b.speed);
@@ -176,13 +175,13 @@ class Enemy extends MovingEntity {
 		color = c;
 		switch (color) {
 			case Color.RED:
-				weakColor = Color.RED;
+				weakColor = Color.YELLOW;
 				//spritemap.play(A_RED);
 			case Color.YELLOW:
-				weakColor = Color.YELLOW;
+				weakColor = Color.BLUE;
 				//spritemap.play(A_YELLOW);
 			case Color.BLUE:
-				weakColor = Color.BLUE;
+				weakColor = Color.RED;
 				//spritemap.play(A_BLUE);
 			default:
 				throw new Error("Unsupported value");

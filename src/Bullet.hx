@@ -36,15 +36,15 @@ class Bullet extends MovingEntity {
 			speed = 8;
 		}
 		
-		spritemap = new Spritemap("img/bullets.png", 16, 16);
-		spritemap.add(A_RED, [0]);
-		spritemap.add(A_YELLOW, [1]);
-		spritemap.add(A_BLUE, [2]);
-		spritemap.add(A_WHITE, [3]);
-		spritemap.add(A_PLAYER_RED, [4]);
-		spritemap.add(A_PLAYER_YELLOW, [5]);
-		spritemap.add(A_PLAYER_BLUE, [6]);
-		spritemap.add(A_PLAYER_WHITE, [7]);
+		spritemap = new Spritemap("img/ammo.png", 16, 16);
+		spritemap.add(A_RED, [2, 6, 10], 4);
+		spritemap.add(A_YELLOW, [1, 5, 9], 4);
+		spritemap.add(A_BLUE, [0, 4, 8], 4);
+		spritemap.add(A_WHITE, [3, 7], 5);
+		spritemap.add(A_PLAYER_RED, [2, 6, 10], 4);
+		spritemap.add(A_PLAYER_YELLOW, [1, 5, 9], 4);
+		spritemap.add(A_PLAYER_BLUE, [0, 4, 8], 4);
+		spritemap.add(A_PLAYER_WHITE, [3, 7], 5);
 		spritemap.originX = 8;
 		spritemap.originY = 8;
 		
