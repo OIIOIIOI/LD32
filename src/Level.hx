@@ -63,7 +63,8 @@ class Level {
 			for (xx in 0...data.width) {
 				p = data.getPixel(xx, yy);
 				if (p == 0x000000) {
-					e = new Wall(xx * GRID_SIZE, yy * GRID_SIZE);
+					var p2 = data.getPixel(xx, yy + 1);
+					e = new Wall(xx * GRID_SIZE, yy * GRID_SIZE, p2 == 0x000000);
 					entities.push(e);
 				} else if (p == 0xFF0000) {
 					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
