@@ -17,6 +17,7 @@ class Player extends MovingEntity {
 	static public var A_B:String = "a_b";
 	
 	static public var A_WALK:String = "a_walk";
+	static public var A_HIT:String = "a_hit";
 	
 	var gunSpritemap:Spritemap;
 	var reserveSpritemap:Spritemap;
@@ -62,6 +63,7 @@ class Player extends MovingEntity {
 		spritemap = new Spritemap("img/hero_sprites_01.png", 32, 38);
 		spritemap.add(MovingEntity.A_IDLE, [3]);
 		spritemap.add(A_WALK, [0, 1, 0, 1, 0, 1, 0, 1, 2, 1], 5);
+		spritemap.add(A_HIT, [5, 6, 5, 6], 5, false);
 		spritemap.originX = 16;
 		spritemap.originY = 19;
 		spritemap.play(MovingEntity.A_IDLE);
@@ -86,6 +88,12 @@ class Player extends MovingEntity {
 	override public function update () :Void {
 		super.update();
 		
+		// Animation
+		if (spritemap.currentAnim != A_HIT || spritemap.complete) {
+			if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5)	spritemap.play(A_WALK);
+			else											spritemap.play(MovingEntity.A_IDLE);
+		}
+		
 		var b:Bullet;
 		var a:Array<Entity> = new Array();
 		collideInto(Protrotrype.T_ENEMY_BULLET, x, y, a);
@@ -97,16 +105,14 @@ class Player extends MovingEntity {
 			}
 			// Get hit
 			else {
+				spritemap.play(A_HIT, true);
 				cast(scene, Protrotrype).particles.bulletHit(b);
 				scene.remove(e);
-				HXP.screen.shake(8, 0.6);
+				//HXP.screen.shake(8, 0.6);
+				HXP.screen.shake(5, 0.3);
 			}
 		}
 		a = null;
-		
-		// Animation
-		if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5)	spritemap.play(A_WALK);
-		else											spritemap.play(MovingEntity.A_IDLE);
 		
 		// Gun rotation and sprite flipping
 		var an = Math.atan2(y - scene.mouseY, scene.mouseX - x) * 180 / Math.PI;

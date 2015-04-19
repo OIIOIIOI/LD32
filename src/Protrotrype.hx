@@ -40,7 +40,7 @@ class Protrotrype extends Scene {
 		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
 		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
 		
-		level = new Level(3);
+		level = new Level(2);
 		for (e in level.entities) {
 			add(e);
 		}
