@@ -30,13 +30,13 @@ class Level {
 	public var floor:Entity;
 	public var floorData:BitmapData;
 	
-	static var bloodStains:Array<BitmapData>;
+	//static var bloodStains:Array<BitmapData>;
 	
 	public function new (n:Int) {
 		data = Assets.getBitmapData("img/level" + n + ".png");
 		if (data == null)	throw new Error("Level not found");
 		
-		if (bloodStains == null)	initBloodStains();
+		//if (bloodStains == null)	initBloodStains();
 		
 		entities = new Array();
 		enemies = new Array();
@@ -55,7 +55,7 @@ class Level {
 			}
 		}
 		floor = new Entity(0, 0, new Image(floorData));
-		entities.push(floor);
+		//entities.push(floor);
 		
 		var p:UInt = 0;
 		var e:Entity;
@@ -83,7 +83,7 @@ class Level {
 		}
 	}
 	
-	public function initBloodStains () {
+	/*public function initBloodStains () {
 		bloodStains = new Array();
 		var bd = Assets.getBitmapData("img/blood.png");
 		var hor = Std.int(bd.width / 40);
@@ -119,6 +119,6 @@ class Level {
 		floor.graphic.destroy();
 		floor.graphic = null;
 		floor.graphic = new Image(floorData);
-	}
+	}*/
 	
 }

@@ -21,8 +21,6 @@ class Bullet extends MovingEntity {
 	
 	@:isVar public var color(default, set):Color;
 	
-	var health:Float;
-	
 	public function new (x:Float=0, y:Float=0, c:Color, mine:Bool = true) {
 		super(x, y);
 		

@@ -25,6 +25,7 @@ class Protrotrype extends Scene {
 	public static var T_WALLS:String = "t_walls";
 	
 	public var level:Level;
+	var bloodLayer:Entity;
 	
 	var player:Player;
 	
@@ -43,19 +44,28 @@ class Protrotrype extends Scene {
 		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
 		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
 		
-		level = new Level(2);
+		particles = new ParticleMan();
+		add(particles);
+		
+		level = new Level(3);
+		// Add flood
+		add(level.floor);
+		level.floor.layer = 999;
+		// Add blood layer
+		bloodLayer = new Entity(0, 0, particles.bloodEmitter);
+		add(bloodLayer);
+		bloodLayer.layer = 989;
+		// Add entities
 		for (e in level.entities) {
 			add(e);
 		}
+		// Add enemies
 		for (e in level.enemies) {
 			add(e);
 		}
 		
 		player = new Player(level.startingPos.x, level.startingPos.y);
 		add(player);
-		
-		particles = new ParticleMan();
-		add(particles);
 		
 		cursor = new Entity(0, 0, new Image("img/cursor.png"));
 		cursor.layer = -99999;
@@ -117,7 +127,7 @@ class Protrotrype extends Scene {
 	}
 	
 	public function gameOver (win:Bool) {
-		gameRunning = false;
+		//gameRunning = false;
 		
 		/*HXP.screen.scale = 1;
 		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);

@@ -18,17 +18,19 @@ class Enemy extends MovingEntity {
 	static public var A_YELLOW:String = "a_yellow";
 	static public var A_BLUE:String = "a_blue";
 	
-	static public var A_RED_IDLE:String = "a_red_idle";
-	static public var A_RED_WALK:String = "a_red_walk";
-	static public var A_RED_SHOOT:String = "a_red_shoot";
-	static public var A_RED_DEAD:String = "a_red_dead";
+	static public var A_IDLE:String = "a_idle";
+	static public var A_WALK:String = "a_walk";
+	static public var A_SHOOT:String = "a_shoot";
+	static public var A_DEAD:String = "a_dead";
 	
-	@:isVar public var color(default, set):Color;
 	public var weakColor(default, null):Color;
+	@:isVar public var color(default, set):Color;
 	
 	var fovRadius:Int;
 	var shootInterval:Float;
 	var shootTick:Float;
+	
+	var shadow:Image;
 	
 	public function new (x:Float=0, y:Float=0, ?c:Color) {
 		super(x, y);
@@ -40,7 +42,7 @@ class Enemy extends MovingEntity {
 		type = Protrotrype.T_ENEMY;
 		
 		// Shadow
-		var shadow = new Image("img/shadow.png");
+		shadow = new Image("img/shadow.png");
 		shadow.centerOrigin();
 		shadow.x = 3;
 		shadow.y = 19;
@@ -51,13 +53,14 @@ class Enemy extends MovingEntity {
 		switch (c) {
 			case Color.RED:
 				spritemap = new Spritemap("img/skeleton_sprites_01.png", 32, 38);
-				spritemap.add(A_RED_IDLE, [0, 1], 5);
-				spritemap.add(A_RED_WALK, [1, 2], 5);
-				spritemap.add(A_RED_SHOOT, [3]);
-				spritemap.add(A_RED_DEAD, [4]);
+				spritemap.add(A_IDLE, [0, 1], 5);
+				spritemap.add(A_WALK, [1, 2], 5);
+				spritemap.add(A_SHOOT, [3], 3, false);
+				spritemap.add(A_DEAD, [4]);
 				spritemap.originX = 16;
-				spritemap.originY = 19;
-				spritemap.play(A_RED_IDLE);
+				spritemap.originY = 24;
+				spritemap.play(A_IDLE);
+				shadow.y = 14;
 			default:
 				spritemap = new Spritemap("img/enemies_alt.png", 32, 32);
 				spritemap.add(A_YELLOW, [0]);
@@ -88,6 +91,8 @@ class Enemy extends MovingEntity {
 	override public function update () :Void {
 		super.update();
 		
+		if (isDead()) return;
+		
 		shootTick += HXP.elapsed;
 		if (shootTick >= shootInterval) {
 			shoot();
@@ -100,19 +105,28 @@ class Enemy extends MovingEntity {
 		for (e in a) {
 			b = cast(e);
 			// Get hit
-			if (b.color == weakColor || b.color == Color.WHITE) {
+			if (b.color == color || b.color == Color.WHITE) {
+				health--;
 				cast(scene, Protrotrype).particles.bulletHit(b);
 				scene.remove(b);
-				scene.remove(this);
-				HXP.screen.shake(3, 0.2);
-				// Check if end of level
-				var enemies = cast(scene, Protrotrype).level.enemies;
-				cast(scene, Protrotrype).level.paintBlood(this);
-				enemies.remove(this);
-				if (enemies.length == 0) {
-					Timer.delay(cast(scene, Protrotrype).gameOver.bind(true), 1000);
+				// Dead
+				if (health <= 0) {
+					spritemap.play(A_DEAD);
+					//scene.remove(this);
+					HXP.screen.shake(3, 0.2);
+					// Check if end of level
+					var enemies = cast(scene, Protrotrype).level.enemies;
+					//cast(scene, Protrotrype).level.paintBlood(this);
+					cast(scene, Protrotrype).particles.bloodStains(this);
+					trace(this.layer);
+					enemies.remove(this);
+					if (enemies.length == 0) {
+						Timer.delay(cast(scene, Protrotrype).gameOver.bind(true), 1000);
+					}
+					break;
+				} else {
+					HXP.screen.shake(1, 0.2);
 				}
-				break;
 			}
 			// Reflect bullet
 			else {
@@ -120,16 +134,33 @@ class Enemy extends MovingEntity {
 			}
 		}
 		a = null;
+		
+		// Animation
+		if (spritemap.currentAnim != A_IDLE && spritemap.complete) {
+			spritemap.play(A_IDLE);
+		}
 	}
 	
 	function shoot () {
 		var player = scene.getInstance("player");
-		if (player != null && !cast(player, Player).isStunned()) {
+		if (player != null && !cast(player, Player).isStunned() && !cast(player, Player).isDead()) {
 			// Check view distance
 			if (HXP.distance(x, y, player.x, player.y) > fovRadius)	return;
+			// Flip
+			if (player.x > x) {
+				spritemap.flipped = true;
+				shadow.x = -3;
+			} else {
+				spritemap.flipped = false;
+				shadow.x = 3;
+			}
 			// Check line of sight
 			var block = scene.collideLine(Protrotrype.T_WALLS, Std.int(x), Std.int(y), Std.int(player.x), Std.int(player.y), 4);
 			if (block == null) {
+				switch (color) {
+					default:	spritemap.play(A_SHOOT);
+				}
+				
 				var b = new Bullet(x, y, color, false);
 				Main.TAP.x = player.x - x;
 				Main.TAP.y = player.y - y;
@@ -145,13 +176,13 @@ class Enemy extends MovingEntity {
 		color = c;
 		switch (color) {
 			case Color.RED:
-				weakColor = Color.BLUE;
+				weakColor = Color.RED;
 				//spritemap.play(A_RED);
 			case Color.YELLOW:
-				weakColor = Color.RED;
+				weakColor = Color.YELLOW;
 				//spritemap.play(A_YELLOW);
 			case Color.BLUE:
-				weakColor = Color.YELLOW;
+				weakColor = Color.BLUE;
 				//spritemap.play(A_BLUE);
 			default:
 				throw new Error("Unsupported value");

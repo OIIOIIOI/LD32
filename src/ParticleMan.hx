@@ -18,6 +18,8 @@ class ParticleMan extends Entity {
 	
 	var bulletHitEmitter:Emitter;
 	
+	public var bloodEmitter:Emitter;
+	
 	public function new () {
 		super();
 		
@@ -32,6 +34,15 @@ class ParticleMan extends Entity {
 		bulletHitEmitter.setAlpha("hit_part", 1, 0);
 		bulletHitEmitter.setGravity("hit_part", 2);
 		addGraphic(bulletHitEmitter);
+		
+		bloodEmitter = new Emitter("img/blood.png", 40, 32);
+		bloodEmitter.newType("a", [9]);
+		bloodEmitter.newType("b", [10]);
+		bloodEmitter.newType("c", [11]);
+		bloodEmitter.setAlpha("a", 0.6, 0);
+		bloodEmitter.setAlpha("b", 0.6, 0);
+		bloodEmitter.setAlpha("c", 0.6, 0);
+		//addGraphic(bloodEmitter);
 		
 		layer = -9999;
 	}
@@ -60,6 +71,20 @@ class ParticleMan extends Entity {
 		var a = Math.atan2(e.dy, -e.dx) * 180 / Math.PI;
 		walkEmitter.setMotion("sand_part", a, 8, 1, 0, 4, 0, Ease.quadOut);
 		walkEmitter.emitInCircle("sand_part", e.centerX, e.bottom + 4, 8);
+	}
+	
+	public function bloodStains (e:Enemy) {
+		bloodEmitter.setMotion("a", 0, 0, 5);
+		bloodEmitter.setMotion("b", 0, 0, 5);
+		bloodEmitter.setMotion("c", 0, 0, 5);
+		for (i in 0...6) {
+			var a:String = switch (Std.random(3)) {
+				case 0:		"a";
+				case 1:		"b";
+				default:	"c";
+			}
+			bloodEmitter.emitInCircle(a, e.x, e.bottom, 16);
+		}
 	}
 	
 }

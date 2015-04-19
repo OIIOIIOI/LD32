@@ -17,6 +17,7 @@ class MovingEntity extends Entity {
 	var friction:Float;
 	
 	var spritemap:Spritemap;
+	var health:Int;
 	
 	public function new (x:Float = 0, y:Float = 0) {
 		super(x, y);
@@ -24,6 +25,7 @@ class MovingEntity extends Entity {
 		dx = dy = 0;
 		speed = 0;
 		friction = 1;
+		health = 1;
 	}
 	
 	override public function update () :Void {
@@ -40,8 +42,10 @@ class MovingEntity extends Entity {
 		layer = -Std.int(y);
 	}
 	
-	function collision () {
-		
+	function collision () { }
+	
+	public function isDead () :Bool {
+		return health <= 0;
 	}
 	
 }
