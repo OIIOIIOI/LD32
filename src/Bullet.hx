@@ -69,6 +69,7 @@ class Bullet extends MovingEntity {
 		}
 		
 		if (collide(Protrotrype.T_WALLS, x, y) != null) {
+			cast(scene, Protrotrype).particles.bulletHit(this);
 			scene.remove(this);
 		}
 	}

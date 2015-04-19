@@ -18,7 +18,7 @@ class Enemy extends MovingEntity {
 	static public var A_BLUE:String = "a_blue";
 	
 	@:isVar public var color(default, set):Color;
-	var weakColor:Color;
+	public var weakColor(default, null):Color;
 	
 	var fovRadius:Int;
 	var shootInterval:Float;
@@ -79,6 +79,7 @@ class Enemy extends MovingEntity {
 				HXP.screen.shake(1, 0.2);
 				// Check if end of level
 				var enemies = cast(scene, Protrotrype).level.enemies;
+				cast(scene, Protrotrype).level.paintBlood(this);
 				enemies.remove(this);
 				if (enemies.length == 0) {
 					Timer.delay(cast(scene, Protrotrype).gameOver.bind(true), 1000);

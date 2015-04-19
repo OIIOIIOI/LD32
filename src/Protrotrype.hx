@@ -31,6 +31,8 @@ class Protrotrype extends Scene {
 	var camCoeff:Float;
 	var gameRunning:Bool;
 	
+	public var particles(default, null):ParticleMan;
+	
 	public function new () {
 		super();
 		
@@ -39,7 +41,7 @@ class Protrotrype extends Scene {
 		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
 		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
 		
-		level = new Level(2);
+		level = new Level(1);
 		for (e in level.entities) {
 			add(e);
 		}
@@ -53,6 +55,9 @@ class Protrotrype extends Scene {
 		gun = new Gun(player.x, player.y);
 		gun.updateColors(player.nextColor, player.currentColor);
 		add(gun);
+		
+		particles = new ParticleMan();
+		add(particles);
 		
 		camCoeff = 0.2;
 		gameRunning = true;
@@ -125,6 +130,9 @@ class Protrotrype extends Scene {
 		Main.TAP.y = HXP.camera.y + (Main.TAP.y - HXP.camera.y) * camCoeff;
 		Main.TAP.y = HXP.clamp(player.y - VIEW_HEIGHT / 2, 0, level.height - VIEW_HEIGHT);
 		HXP.setCamera(Std.int(Main.TAP.x), Std.int(Main.TAP.y));
+		
+		// Particles
+		if (Math.abs(player.dx) > 0.5 || Math.abs(player.dy) > 0.5)	particles.walk(player);
 	}
 	
 	public function gameOver (win:Bool) {

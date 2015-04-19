@@ -2,6 +2,7 @@ package ;
 
 import flash.Lib;
 import openfl.geom.Point;
+import openfl.geom.Rectangle;
 
 /**
  * ...
@@ -11,6 +12,7 @@ import openfl.geom.Point;
 class Main {
 	
 	static public var TAP:Point = new Point();
+	static public var TAR:Rectangle = new Rectangle();
 	
 	public static function main () {
 		Lib.current.stage.align = flash.display.StageAlign.TOP_LEFT;
