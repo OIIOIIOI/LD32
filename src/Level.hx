@@ -58,7 +58,7 @@ class Level {
 		//entities.push(floor);
 		
 		var p:UInt = 0;
-		var e:Entity;
+		var e:Entity = null;
 		for (yy in 0...data.height) {
 			for (xx in 0...data.width) {
 				p = data.getPixel(xx, yy);
@@ -69,12 +69,18 @@ class Level {
 					entities.push(e);
 				} else if (p == 0xFF0000) {
 					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
+					e.x += GRID_SIZE / 2;
+					e.y += GRID_SIZE / 2;
 					enemies.push(e);
 				} else if (p == 0xFFFF00) {
 					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
+					e.x += GRID_SIZE / 2;
+					e.y += GRID_SIZE / 2;
 					enemies.push(e);
 				} else if (p == 0x0000FF) {
 					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
+					e.x += GRID_SIZE / 2;
+					e.y += GRID_SIZE / 2;
 					enemies.push(e);
 				} else if (p == 0x00FF00) {
 					startingPos.x = xx * GRID_SIZE;

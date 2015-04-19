@@ -104,6 +104,8 @@ class Protrotrype extends Scene {
 				player.dx -= Main.TAP.x;
 				player.dy -= Main.TAP.y;
 				player.cycleColors();
+				// Shake
+				HXP.screen.shake(1, 0.2);
 			}
 			
 			// Swap

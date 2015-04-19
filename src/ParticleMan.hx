@@ -31,7 +31,7 @@ class ParticleMan extends Entity {
 		
 		bulletHitEmitter = new Emitter("img/hit_part.png", 8, 8);
 		bulletHitEmitter.newType("hit_part", [0, 1, 2, 3]);
-		bulletHitEmitter.setAlpha("hit_part", 1, 0);
+		bulletHitEmitter.setAlpha("hit_part", 1, 0.5);
 		bulletHitEmitter.setGravity("hit_part", 2);
 		addGraphic(bulletHitEmitter);
 		
@@ -39,9 +39,9 @@ class ParticleMan extends Entity {
 		bloodEmitter.newType("a", [9]);
 		bloodEmitter.newType("b", [10]);
 		bloodEmitter.newType("c", [11]);
-		bloodEmitter.setAlpha("a", 0.6, 0);
-		bloodEmitter.setAlpha("b", 0.6, 0);
-		bloodEmitter.setAlpha("c", 0.6, 0);
+		bloodEmitter.setAlpha("a", 0.4, 0);
+		bloodEmitter.setAlpha("b", 0.4, 0);
+		bloodEmitter.setAlpha("c", 0.4, 0);
 		//addGraphic(bloodEmitter);
 		
 		layer = -9999;
@@ -50,9 +50,9 @@ class ParticleMan extends Entity {
 	public function bulletHit (b:Bullet) {
 		var c = switch (b.color) {
 			case Color.WHITE:	0xFFFFFF;
-			case Color.BLUE:	0x9999FF;
-			case Color.RED:		0xFF9999;
-			case Color.YELLOW:	0xFFFF99;
+			case Color.BLUE:	0x0776f9;
+			case Color.RED:		0xc32a01;
+			case Color.YELLOW:	0x81bd36;
 		}
 		
 		var a = Math.atan2(b.dy, -b.dx) * 180 / Math.PI;

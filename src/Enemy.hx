@@ -61,13 +61,32 @@ class Enemy extends MovingEntity {
 				spritemap.originY = 24;
 				spritemap.play(A_IDLE);
 				shadow.y = 14;
-			default:
-				spritemap = new Spritemap("img/enemies_alt.png", 32, 32);
-				spritemap.add(A_YELLOW, [0]);
-				spritemap.add(A_BLUE, [1]);
-				spritemap.add(A_RED, [2]);
+			case Color.BLUE:
+				setHitbox(28, 28, -16, -16);
+				spritemap = new Spritemap("img/indian_sprites_01.png", 32, 54);
+				spritemap.add(A_IDLE, [0, 1], 5);
+				spritemap.add(A_WALK, [2, 3], 5);
+				spritemap.add(A_SHOOT, [4], 3, false);
+				spritemap.add(A_DEAD, [5]);
 				spritemap.originX = 16;
-				spritemap.originY = 16;
+				spritemap.originY = 40;
+				spritemap.play(A_IDLE);
+				shadow.x = 0;
+				shadow.y = 14;
+			case Color.YELLOW:
+				setHitbox(28, 28, -16, -16);
+				spritemap = new Spritemap("img/cowboy_sprites_01.png", 32, 36);
+				spritemap.add(A_IDLE, [0, 1], 5);
+				spritemap.add(A_WALK, [1, 2], 5);
+				spritemap.add(A_SHOOT, [3], 3, false);
+				spritemap.add(A_DEAD, [4]);
+				spritemap.originX = 16;
+				spritemap.originY = 20;
+				spritemap.play(A_IDLE);
+				shadow.x = -2;
+				shadow.y = 16;
+			default:
+				throw new Error("Invalid color");
 		}
 		
 		addGraphic(spritemap);
@@ -148,10 +167,12 @@ class Enemy extends MovingEntity {
 			// Flip
 			if (player.x > x) {
 				spritemap.flipped = true;
-				shadow.x = -3;
+				if (color == Color.RED)			shadow.x = -3;
+				else if (color == Color.YELLOW)	shadow.x = 2;
 			} else {
 				spritemap.flipped = false;
-				shadow.x = 3;
+				if (color == Color.RED)			shadow.x = 3;
+				else if (color == Color.YELLOW)	shadow.x = -2;
 			}
 			// Check line of sight
 			var block = scene.collideLine(Protrotrype.T_WALLS, Std.int(x), Std.int(y), Std.int(player.x), Std.int(player.y), 4);

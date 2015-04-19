@@ -84,8 +84,8 @@ class Bullet extends MovingEntity {
 			//speed = 8;
 		}
 		
-		Main.TAP.x = dx;
-		Main.TAP.y = dy;
+		Main.TAP.x = dx * (Std.random(9) + 1) / 10;
+		Main.TAP.y = dy * (Std.random(9) + 1) / 10;
 		Main.TAP.normalize(speed);
 		dx = -Main.TAP.x;
 		dy = -Main.TAP.y;
