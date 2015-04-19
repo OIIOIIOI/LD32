@@ -131,11 +131,14 @@ class Enemy extends MovingEntity {
 				// Dead
 				if (health <= 0) {
 					spritemap.play(A_DEAD);
-					//scene.remove(this);
+					
 					HXP.screen.shake(3, 0.2);
+					
+					// Score
+					ScoreMan.awardShot(this);
+					
 					// Check if end of level
 					var enemies = cast(scene, Protrotrype).level.enemies;
-					//cast(scene, Protrotrype).level.paintBlood(this);
 					cast(scene, Protrotrype).particles.bloodStains(this);
 					enemies.remove(this);
 					if (enemies.length == 0) {
@@ -149,6 +152,8 @@ class Enemy extends MovingEntity {
 			// Reflect bullet
 			else {
 				b.reflect();
+				// Score
+				ScoreMan.comboBreak();
 			}
 		}
 		a = null;

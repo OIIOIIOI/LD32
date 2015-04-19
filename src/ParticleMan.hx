@@ -3,6 +3,7 @@ package ;
 import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Emitter;
+import com.haxepunk.HXP;
 import com.haxepunk.Mask;
 import com.haxepunk.utils.Ease;
 import Protrotrype;
@@ -36,9 +37,9 @@ class ParticleMan extends Entity {
 		addGraphic(bulletHitEmitter);
 		
 		bloodEmitter = new Emitter("img/blood.png", 40, 32);
-		bloodEmitter.newType("a", [9]);
-		bloodEmitter.newType("b", [10]);
-		bloodEmitter.newType("c", [11]);
+		bloodEmitter.newType("a", [0]);
+		bloodEmitter.newType("b", [1]);
+		bloodEmitter.newType("c", [2]);
 		bloodEmitter.setAlpha("a", 0.4, 0);
 		bloodEmitter.setAlpha("b", 0.4, 0);
 		bloodEmitter.setAlpha("c", 0.4, 0);
@@ -83,7 +84,7 @@ class ParticleMan extends Entity {
 				case 1:		"b";
 				default:	"c";
 			}
-			bloodEmitter.emitInCircle(a, e.x, e.bottom, 16);
+			bloodEmitter.emitInCircle(a, e.x, e.bottom, 20);
 		}
 	}
 	

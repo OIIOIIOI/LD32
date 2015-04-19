@@ -24,7 +24,10 @@ class Protrotrype extends Scene {
 	public static var T_ENEMY:String = "t_enemy";
 	public static var T_WALLS:String = "t_walls";
 	
+	public var particles(default, null):ParticleMan;
+	
 	public var level:Level;
+	
 	var bloodLayer:Entity;
 	
 	var player:Player;
@@ -32,9 +35,8 @@ class Protrotrype extends Scene {
 	var camCoeff:Float;
 	var gameRunning:Bool;
 	
-	public var particles(default, null):ParticleMan;
-	
 	var cursor:Entity;
+	public var scoreText:ScoreText;
 	
 	public function new () {
 		super();
@@ -43,6 +45,8 @@ class Protrotrype extends Scene {
 		
 		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
 		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
+		
+		ScoreMan.init();
 		
 		particles = new ParticleMan();
 		add(particles);
@@ -71,6 +75,11 @@ class Protrotrype extends Scene {
 		cursor.layer = -99999;
 		add(cursor);
 		
+		scoreText = new ScoreText();
+		scoreText.x = camera.x;
+		scoreText.y = camera.y;
+		add(scoreText);
+		
 		camCoeff = 0.2;
 		gameRunning = true;
 	}
@@ -78,7 +87,7 @@ class Protrotrype extends Scene {
 	override public function update ()  {
 		super.update();
 		
-		if (gameRunning) {
+		if (gameRunning && !player.isDead() && !player.isStunned()) {
 			// Player movement
 			Main.TAP.x = Main.TAP.y = 0;
 			if (Input.check("up"))		Main.TAP.y -= player.speed * HXP.elapsed;
@@ -119,6 +128,10 @@ class Protrotrype extends Scene {
 			Main.TAP.y = HXP.camera.y + (Main.TAP.y - HXP.camera.y) * camCoeff;
 			Main.TAP.y = HXP.clamp(player.y - VIEW_HEIGHT / 2, 0, level.height - VIEW_HEIGHT);
 			HXP.setCamera(Std.int(Main.TAP.x), Std.int(Main.TAP.y));
+			
+			// Score
+			scoreText.x = camera.x + 5;
+			scoreText.y = camera.y;
 		}
 		
 		// Particles

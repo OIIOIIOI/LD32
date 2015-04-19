@@ -118,9 +118,10 @@ class Player extends MovingEntity {
 			}
 			// Get hit
 			else {
-				health--;
 				cast(scene, Protrotrype).particles.bulletHit(b);
 				scene.remove(e);
+				
+				health--;
 				if (health <= 0) {
 					HXP.screen.shake(8, 0.6);
 					spritemap.play(A_DEATH);
@@ -133,6 +134,8 @@ class Player extends MovingEntity {
 					gunSpritemap.visible = false;
 					reserveSpritemap.visible = false;
 				}
+				// Score
+				ScoreMan.comboBreak();
 			}
 		}
 		a = null;
