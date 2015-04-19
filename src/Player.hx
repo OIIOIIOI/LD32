@@ -57,6 +57,7 @@ class Player extends MovingEntity {
 			}
 			// Get hit
 			else {
+				cast(scene, Protrotrype).particles.bulletHit(b);
 				scene.remove(e);
 				HXP.screen.shake(3, 0.2);
 			}

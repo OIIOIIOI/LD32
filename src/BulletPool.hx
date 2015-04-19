@@ -17,13 +17,14 @@ class BulletPool {
 	}
 	
 	function fill () {
-		for (i in 0...10) {
-			list.push(switch (Std.random(3)) {
-				case 0:		Color.BLUE;
-				case 1:		Color.RED;
-				default:	Color.YELLOW;
-			});
+		var a = new Array<Color>();
+		for (i in 0...4)	a.push(Color.BLUE);
+		for (i in 0...4)	a.push(Color.RED);
+		for (i in 0...4)	a.push(Color.YELLOW);
+		while (a.length > 0) {
+			list.push(a.splice(Std.random(a.length - 1), 1)[0]);
 		}
+		a = null;
 	}
 	
 	public function getNext () :Color {

@@ -65,6 +65,7 @@ class Bullet extends MovingEntity {
 		//health -= HXP.elapsed;
 		
 		if (health <= 0 || right < 0 || left > cast(scene, Protrotrype).level.width || bottom < 0 || top > cast(scene, Protrotrype).level.height) {
+			cast(scene, Protrotrype).particles.bulletHit(this);
 			scene.remove(this);
 		}
 		

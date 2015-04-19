@@ -74,7 +74,8 @@ class Enemy extends MovingEntity {
 			b = cast(e);
 			// Get hit
 			if (b.color == weakColor || b.color == Color.WHITE) {
-				scene.remove(e);
+				cast(scene, Protrotrype).particles.bulletHit(b);
+				scene.remove(b);
 				scene.remove(this);
 				HXP.screen.shake(1, 0.2);
 				// Check if end of level

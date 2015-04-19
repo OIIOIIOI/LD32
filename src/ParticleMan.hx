@@ -41,13 +41,11 @@ class ParticleMan extends Entity {
 			case Color.RED:		0xFF9999;
 			case Color.YELLOW:	0xFFFF99;
 		}
-		var a = 0;
-		for (i in 0...15) {
-			a = i * 24;
+		
+		var a = Math.atan2(b.dy, -b.dx) * 180 / Math.PI;
+		for (i in 0...10) {
 			bulletHitEmitter.setColor("hit_part", c, c);
-			bulletHitEmitter.setMotion("hit_part", a - 5, 32, 0.8, 10, 16, 0.4, Ease.quadOut);
-			bulletHitEmitter.emit("hit_part", b.x, b.y);
-			bulletHitEmitter.setMotion("hit_part", a - 5, 8, 0.8, 10, 8, 0, Ease.quadOut);
+			bulletHitEmitter.setMotion("hit_part", a - 45, 32, 0.8, 90, 16, 0.4, Ease.quadOut);
 			bulletHitEmitter.emit("hit_part", b.x, b.y);
 		}
 	}
