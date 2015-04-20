@@ -27,20 +27,17 @@ class HitText extends MovingEntity {
 			var bd = Assets.getBitmapData("img/hit_text_colors.png");
 			for (i in 0...bd.width) {
 				colors.push(bd.getPixel(i, 0));
-				//colors.push(0xFFFFFF);
 			}
 		}
 		colIndex = 0;
 		tick = 0;
 		
 		text = new Text(s);
-		//text.font = "fonts/MANIFESTO.ttf";
 		text.color = colors[colIndex];
 		text.size = 16;
 		text.centerOrigin();
 		
 		shadow = new Text(s);
-		//text.font = "fonts/MANIFESTO.ttf";
 		shadow.color = 0x000000;
 		shadow.size = text.size;
 		shadow.centerOrigin();

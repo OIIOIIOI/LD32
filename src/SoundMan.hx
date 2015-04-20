@@ -1,8 +1,10 @@
 package ;
 
+import com.anttikupila.media.CustomSoundFX;
 import com.haxepunk.HXP;
 import com.haxepunk.Sfx;
 import openfl.Assets;
+import openfl.media.SoundChannel;
 
 /**
  * ...
@@ -20,6 +22,8 @@ class SoundMan {
 	static var menuCredits:Sfx;
 	
 	static var musicSFX:AdvancedSfx;
+	//static var musicSFX:CustomSoundFX;
+	//static var musicChannel:SoundChannel;
 	
 	static var swapSFX:Sfx;
 	static var shootSFX:Array<Sfx>;
@@ -44,6 +48,7 @@ class SoundMan {
 		menuCredits = new Sfx(Assets.getSound("snd/MenuCredits.mp3"));
 		
 		musicSFX = new AdvancedSfx(Assets.getSound("snd/v2.mp3"));
+		//musicSFX = new CustomSoundFX(asfx.getSound());
 		
 		swapSFX = new Sfx(Assets.getSound("snd/Gun Swap.mp3"));
 		
@@ -102,6 +107,7 @@ class SoundMan {
 		menuOptions.volume = menuOptions.volume / MUSIC_VOL * v;
 		menuCredits.volume = menuCredits.volume / MUSIC_VOL * v;
 		musicSFX.volume = musicSFX.volume / MUSIC_VOL * v;
+		//musicSFX.
 	}
 	
 	public static function playMenuMood (stop:Bool = false, vol:Float = 0.2, pan:Float = 0) {
@@ -125,7 +131,10 @@ class SoundMan {
 		else		menuCredits.play(vol*MUSIC_VOL, pan, true);
 	}
 	
-	public static function playMusic (vol:Float = 0.2, pan:Float = 0) { musicSFX.play(vol*MUSIC_VOL, pan, true); }
+	public static function playMusic (vol:Float = 0.2, pan:Float = 0) {
+		musicSFX.play(vol*MUSIC_VOL, pan, true);
+		//musicChannel = musicSFX.play();
+	}
 	
 	public static function swap (vol:Float = 0.3, pan:Float = 0) { swapSFX.play(vol*SFX_VOL, pan); }
 	

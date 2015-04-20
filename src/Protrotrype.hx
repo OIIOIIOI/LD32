@@ -27,6 +27,7 @@ class Protrotrype extends Scene {
 	
 	public var particles(default, null):ParticleMan;
 	
+	//public var level:LevelExt;
 	public var level:Level;
 	
 	var bloodLayer:Entity;
@@ -48,8 +49,15 @@ class Protrotrype extends Scene {
 		particles = new ParticleMan();
 		
 		// Generate level
-		level = new Level(2);
-		
+		ready = false;
+		//level = new LevelExt(loaded);
+		level = new Level(LevelMan.index);
+		loaded();
+	}
+	
+	var ready:Bool;
+	
+	function loaded () {
 		// Add blood layer
 		bloodLayer = new Entity(0, 0, particles.bloodEmitter);
 		
@@ -61,8 +69,13 @@ class Protrotrype extends Scene {
 		scoreText.x = camera.x;
 		scoreText.y = camera.y;
 		
+		// Music
+		SoundMan.playMusic();
+		
 		// Reset
 		reset();
+		
+		ready = true;
 	}
 	
 	function reset () {
@@ -119,6 +132,8 @@ class Protrotrype extends Scene {
 	}
 	
 	override public function update ()  {
+		if (!ready)	return;
+		
 		super.update();
 		
 		if (gameRunning && !player.isDead() && !player.isStunned()) {

@@ -3,17 +3,21 @@ package ;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import openfl.Assets;
+import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import openfl.display.Loader;
 import openfl.errors.Error;
+import openfl.events.Event;
 import openfl.filters.BlurFilter;
 import openfl.geom.Point;
+import openfl.net.URLRequest;
 import Protrotrype;
 
 /**
  * ...
  * @author 01101101
  */
-class Level {
+class LevelExt {
 	
 	public static var GRID_SIZE:Int = 32;
 	
@@ -30,9 +34,20 @@ class Level {
 	public var floor:Entity;
 	public var floorData:BitmapData;
 	
-	public function new (n:Int) {
-		data = Assets.getBitmapData("img/level" + n + ".png");
-		if (data == null)	throw new Error("Level not found");
+	var call:Void->Void;
+	
+	public function new (cb:Void->Void) {
+		call = cb;
+		
+		var l = new Loader();
+		l.contentLoaderInfo.addEventListener(Event.COMPLETE, loaded);
+		l.load(new URLRequest("../../../assets/img/level1.png"));
+		//l.load(new URLRequest("level99.png"));
+	}
+	
+	function loaded (ev:Event) {
+		data = cast(cast(ev.currentTarget.loader, Loader).content, Bitmap).bitmapData;
+		//data = cast(ev.currentTarget, Loader).content
 		
 		entities = new Array();
 		enemies = new Array();
@@ -64,20 +79,17 @@ class Level {
 					e = new Wall(xx * GRID_SIZE, yy * GRID_SIZE, data.getPixel(xx, yy + 1), data.getPixel(xx, yy - 1));
 					entities.push(e);
 				} else if (p == 0xFF0000) {
-					//e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
-					e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
+					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
 					e.x += GRID_SIZE / 2;
 					e.y += GRID_SIZE / 2;
 					enemies.push(e);
 				} else if (p == 0xFFFF00) {
-					//e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
-					e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
+					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
 					e.x += GRID_SIZE / 2;
 					e.y += GRID_SIZE / 2;
 					enemies.push(e);
 				} else if (p == 0x0000FF) {
-					//e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
-					e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
+					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
 					e.x += GRID_SIZE / 2;
 					e.y += GRID_SIZE / 2;
 					enemies.push(e);
@@ -90,6 +102,8 @@ class Level {
 				}
 			}
 		}
+		
+		if (call != null) call();
 	}
 	
 }

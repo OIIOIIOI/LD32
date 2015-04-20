@@ -176,7 +176,8 @@ class SplashScreen extends Scene {
 		SoundMan.nav(true);
 		SoundMan.playMenuSplash(true);
 		removeAll();
-		HXP.scene = new Protrotrype();
+		HXP.scene = new LevelScreen();
+		//HXP.scene = new Protrotrype();
 	}
 	
 	function goOptions () {

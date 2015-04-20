@@ -136,14 +136,9 @@ class Enemy extends MovingEntity {
 				if (health <= 0) {
 					// Anim
 					spritemap.play(A_DEAD);
-					// Blood
-					cast(scene, Protrotrype).particles.bloodStains(this);
+					getHurt();
 					// Shake
 					HXP.screen.shake(Math.ceil(3 * Game.SHAKENESS), 0.3 * Game.SHAKENESS);
-					// Sound
-					SoundMan.enemyDie();
-					// Score
-					ScoreMan.awardShot(this);
 					
 					// Check if end of level
 					var enemies = scene.entitiesForType(Protrotrype.T_ENEMY);
@@ -172,6 +167,15 @@ class Enemy extends MovingEntity {
 		if (spritemap.currentAnim != A_IDLE && spritemap.complete) {
 			spritemap.play(A_IDLE);
 		}
+	}
+	
+	function getHurt () {
+		// Blood
+		cast(scene, Protrotrype).particles.bloodStains(this);
+		// Sound
+		SoundMan.enemyDie();
+		// Score
+		ScoreMan.awardShot(this);
 	}
 	
 	function shoot () {
