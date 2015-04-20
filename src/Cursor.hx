@@ -23,9 +23,11 @@ class Cursor extends Entity {
 		spritemap.add(A_Y, [0]);
 		spritemap.add(A_B, [1]);
 		spritemap.add(A_R, [2]);
-		spritemap.originX = 6;
-		spritemap.originY = 6;
+		//spritemap.originX = 6;
+		//spritemap.originY = 6;
 		addGraphic(spritemap);
+		
+		centerOrigin();
 		
 		layer = -99999;
 	}

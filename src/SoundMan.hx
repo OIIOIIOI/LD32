@@ -24,9 +24,10 @@ class SoundMan {
 	static var playerHurtSFX:Array<Sfx>;
 	static var playerDieSFX:Sfx;
 	static var walkOnSandSFX:Sfx;
+	static var navSFX:Sfx;
 	
 	public static function init () {
-		musicSFX = new Sfx(Assets.getSound("snd/the guy the gun and the gooey.mp3"));
+		musicSFX = new Sfx(Assets.getSound("snd/v2.mp3"));
 		
 		swapSFX = new Sfx(Assets.getSound("snd/Gun Swap.mp3"));
 		
@@ -62,6 +63,8 @@ class SoundMan {
 		playerDieSFX = new Sfx(Assets.getSound("snd/Heros Death.mp3"));
 		
 		walkOnSandSFX = new Sfx(Assets.getSound("snd/Walk on Sand.mp3"));
+		
+		navSFX = new Sfx(Assets.getSound("snd/Navigation.mp3"));
 	}
 	
 	public static function playMusic (vol:Float = 0.3, pan:Float = 0) {
@@ -103,5 +106,7 @@ class SoundMan {
 	public static function stopOnSand () {
 		if (walkOnSandSFX.playing)	walkOnSandSFX.stop();
 	}
+	
+	public static function nav (vol:Float = 0.3, pan:Float = 0) { navSFX.play(vol, pan); }
 	
 }

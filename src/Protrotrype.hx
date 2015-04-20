@@ -112,6 +112,7 @@ class Protrotrype extends Scene {
 		// Cursor color
 		cursor.changeColor(player.currentColor);
 		add(cursor);
+		Mouse.hide();
 		
 		// Start
 		gameRunning = true;
@@ -141,6 +142,9 @@ class Protrotrype extends Scene {
 				Main.TAP.normalize(16);
 				// Spawn bullet
 				var b = new Bullet(player.x + Main.TAP.x, player.y + 8 + Main.TAP.y, player.currentColor);
+				Main.TAP.x = this.mouseX - b.x;
+				Main.TAP.y = this.mouseY - b.y;
+				
 				Main.TAP.normalize(b.speed);
 				b.dx = Main.TAP.x;
 				b.dy = Main.TAP.y;

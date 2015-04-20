@@ -32,9 +32,7 @@ class Game extends Engine {
 		SoundMan.playMusic();
 		
 		//HXP.scene = new Protrotrype();
-		HXP.scene = new MenuScreen();
-		
-		Mouse.hide();
+		HXP.scene = new SplashScreen();
 	}
 	
 }
