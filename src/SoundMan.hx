@@ -67,7 +67,7 @@ class SoundMan {
 		navSFX = new Sfx(Assets.getSound("snd/Navigation.mp3"));
 	}
 	
-	public static function playMusic (vol:Float = 0.3, pan:Float = 0) {
+	public static function playMusic (vol:Float = 0.2, pan:Float = 0) {
 		musicSFX.play(vol, pan, true);
 	}
 	

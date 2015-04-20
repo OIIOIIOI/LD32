@@ -21,6 +21,8 @@ class SplashScreen extends Scene {
 	var title:ClickableEntity;
 	
 	var startButton:ClickableEntity;
+	var optionsButton:ClickableEntity;
+	var creditsButton:ClickableEntity;
 	
 	var step:Int;
 	
@@ -63,8 +65,27 @@ class SplashScreen extends Scene {
 		t.color = 0xFFFFFF;
 		t.size = 48;
 		t.centerOrigin();
+		t.angle = (Std.random(3) + 2) * (Std.random(2) * 2 - 1);
 		startButton = new ClickableEntity(0, 0, t);
 		startButton.y = bar.y + 4;
+		
+		t = new Text("OPTIONS");
+		t.font = "fonts/MesquiteStd.otf";
+		t.color = 0xFFFFFF;
+		t.size = 48;
+		t.centerOrigin();
+		t.angle = (Std.random(3) + 2) * (Std.random(2) * 2 - 1);
+		optionsButton = new ClickableEntity(0, 0, t);
+		optionsButton.y = bar.y + 4;
+		
+		t = new Text("CREDITS");
+		t.font = "fonts/MesquiteStd.otf";
+		t.color = 0xFFFFFF;
+		t.size = 48;
+		t.centerOrigin();
+		t.angle = (Std.random(3) + 2) * (Std.random(2) * 2 - 1);
+		creditsButton = new ClickableEntity(0, 0, t);
+		creditsButton.y = bar.y + 4;
 		
 		// Add splash elements
 		
@@ -105,32 +126,33 @@ class SplashScreen extends Scene {
 	
 	function displayMenu1 () {
 		step++;
-		startButton.x = 580;
+		startButton.x = 590;
 		add(startButton);
-		//startButton.clickHandler = startGame;
+		//
 		HXP.screen.shake(2, 0.2);
 		SoundMan.playerImpact();
-		Timer.delay(displayMenu2, 100);
+		Timer.delay(displayMenu2, 75);
 	}
 	
 	function displayMenu2 () {
-		//step++;
-		startButton.x = 730;
-		//add(startButton);
-		//startButton.clickHandler = startGame;
+		optionsButton.x = 740;
+		add(optionsButton);
+		//
 		HXP.screen.shake(2, 0.2);
 		SoundMan.playerImpact();
 		Timer.delay(displayMenu3, 350);
 	}
 	
 	function displayMenu3 () {
-		//step++;
-		startButton.x = 880;
-		//add(startButton);
+		creditsButton.x = 890;
+		add(creditsButton);
+		//
 		startButton.clickHandler = startGame;
+		optionsButton.clickHandler = startGame;
+		creditsButton.clickHandler = startGame;
+		//
 		HXP.screen.shake(2, 0.2);
 		SoundMan.playerImpact();
-		//Timer.delay(displayMenu2, 250);
 	}
 	
 	function startGame () {
