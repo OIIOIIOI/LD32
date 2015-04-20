@@ -9,6 +9,8 @@ import openfl.Assets;
  */
 class SoundMan {
 	
+	static var musicSFX:Sfx;
+	
 	static var swapSFX:Sfx;
 	static var shootSFX:Array<Sfx>;
 	static var enemyDieSFX:Sfx;
@@ -24,6 +26,8 @@ class SoundMan {
 	static var walkOnSandSFX:Sfx;
 	
 	public static function init () {
+		musicSFX = new Sfx(Assets.getSound("snd/the guy the gun and the gooey.mp3"));
+		
 		swapSFX = new Sfx(Assets.getSound("snd/Gun Swap.mp3"));
 		
 		shootSFX = new Array();
@@ -60,13 +64,17 @@ class SoundMan {
 		walkOnSandSFX = new Sfx(Assets.getSound("snd/Walk on Sand.mp3"));
 	}
 	
+	public static function playMusic (vol:Float = 0.3, pan:Float = 0) {
+		musicSFX.play(vol, pan, true);
+	}
+	
 	public static function swap (vol:Float = 0.3, pan:Float = 0) { swapSFX.play(vol, pan); }
 	
 	public static function shoot (vol:Float = 0.3, pan:Float = 0) {
 		shootSFX[Std.random(shootSFX.length)].play(vol, pan);
 	}
 	
-	public static function enemyDie (vol:Float = 0.3, pan:Float = 0) {
+	public static function enemyDie (vol:Float = 0.2, pan:Float = 0) {
 		enemyHurtSFX[Std.random(enemyHurtSFX.length)].play(vol, pan);
 		enemyDieSFX.play(vol, pan);
 	}
@@ -81,15 +89,15 @@ class SoundMan {
 	
 	public static function reflectBullet (vol:Float = 0.3, pan:Float = 0) { reflectBulletSFX.play(vol, pan); }
 	
-	public static function playerImpact (vol:Float = 0.3, pan:Float = 0) { playerImpactSFX.play(vol, pan); }
+	public static function playerImpact (vol:Float = 0.2, pan:Float = 0) { playerImpactSFX.play(vol, pan); }
 	
-	public static function playerHurt (vol:Float = 0.3, pan:Float = 0) {
+	public static function playerHurt (vol:Float = 0.2, pan:Float = 0) {
 		playerHurtSFX[Std.random(playerHurtSFX.length)].play(vol, pan);
 	}
 	
-	public static function playerDie (vol:Float = 0.3, pan:Float = 0) { playerDieSFX.play(vol, pan); }
+	public static function playerDie (vol:Float = 0.25, pan:Float = 0) { playerDieSFX.play(vol, pan); }
 	
-	public static function walkOnSand (vol:Float = 0.05, pan:Float = 0) {
+	public static function walkOnSand (vol:Float = 0.15, pan:Float = 0) {
 		if (!walkOnSandSFX.playing)	walkOnSandSFX.play(vol, pan, true);
 	}
 	public static function stopOnSand () {
