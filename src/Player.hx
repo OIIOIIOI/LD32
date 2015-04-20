@@ -70,7 +70,7 @@ class Player extends MovingEntity {
 		spritemap.add(MovingEntity.A_IDLE, [3, 4], 5);
 		spritemap.add(A_WALK, [0, 1, 0, 1, 0, 1, 0, 1, 2, 1], 5);
 		spritemap.add(A_HIT, [5, 6, 5, 6], 4, false);
-		spritemap.add(A_DEATH, [5, 6, 5, 6, 7, 8, 9, 10, 11], 4, false);
+		spritemap.add(A_DEATH, [5, 6, 7, 8, 9, 10, 11], 4, false);
 		spritemap.originX = 16;
 		spritemap.originY = ORIG_Y;
 		spritemap.play(MovingEntity.A_IDLE);
@@ -105,8 +105,13 @@ class Player extends MovingEntity {
 			reserveSpritemap.visible = true;
 		}
 		if (spritemap.currentAnim != A_DEATH && (spritemap.currentAnim != A_HIT || spritemap.complete)) {
-			if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5)	spritemap.play(A_WALK);
-			else											spritemap.play(MovingEntity.A_IDLE);
+			if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+				spritemap.play(A_WALK);
+				SoundMan.walkOnSand();
+			} else {
+				spritemap.play(MovingEntity.A_IDLE);
+				SoundMan.stopOnSand();
+			}
 		}
 		
 		var b:Bullet;
@@ -123,18 +128,23 @@ class Player extends MovingEntity {
 				cast(scene, Protrotrype).particles.bulletHit(b);
 				scene.remove(e);
 				
+				SoundMan.playerImpact();
+				
 				health--;
 				if (health <= 0) {
-					HXP.screen.shake(8, 0.6);
+					HXP.screen.shake(7, 0.5);
 					spritemap.play(A_DEATH);
 					gunSpritemap.visible = false;
 					reserveSpritemap.visible = false;
-					Timer.delay(cast(scene, Protrotrype).gameOver.bind(false), 1000);
+					scene.remove(cast(scene, Protrotrype).cursor);
+					Timer.delay(cast(scene, Protrotrype).gameOver.bind(false), 2000);
+					SoundMan.playerDie();
 				} else {
 					HXP.screen.shake(5, 0.3);
 					spritemap.play(A_HIT);
 					gunSpritemap.visible = false;
 					reserveSpritemap.visible = false;
+					SoundMan.playerHurt();
 				}
 				// Score
 				ScoreMan.comboBreak();

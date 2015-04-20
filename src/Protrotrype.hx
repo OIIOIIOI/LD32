@@ -8,6 +8,7 @@ import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 import com.haxepunk.utils.Input;
 import Bullet;
+import openfl.ui.Mouse;
 
 /**
  * ...
@@ -32,61 +33,88 @@ class Protrotrype extends Scene {
 	
 	var player:Player;
 	
-	var camCoeff:Float;
 	var gameRunning:Bool;
 	
-	var cursor:Cursor;
+	public var cursor:Cursor;
 	
 	public var scoreText:ScoreText;
 	
 	public function new () {
 		super();
 		
-		HXP.screen.scale = 2;
+		gameRunning = false;
 		
+		// Particles
+		particles = new ParticleMan();
+		
+		// Generate level
+		level = new Level(2);
+		
+		// Add blood layer
+		bloodLayer = new Entity(0, 0, particles.bloodEmitter);
+		
+		// Cursor
+		cursor = new Cursor();
+		
+		// Score
+		scoreText = new ScoreText();
+		scoreText.x = camera.x;
+		scoreText.y = camera.y;
+		
+		// Reset
+		reset();
+	}
+	
+	function reset () {
+		removeAll();
+		
+		// Screen
+		HXP.screen.scale = 2;
 		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
 		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
 		
-		ScoreMan.init();
+		// Scores
+		ScoreMan.reset();
+		scoreText.setScore("0");
+		scoreText.setCombo(1);
+		add(scoreText);
 		
-		particles = new ParticleMan();
+		// Particles
 		add(particles);
 		
-		level = new Level(3);
 		// Add flood
 		add(level.floor);
 		level.floor.layer = 999;
-		// Add blood layer
-		bloodLayer = new Entity(0, 0, particles.bloodEmitter);
+		
+		// Blood layer
 		add(bloodLayer);
 		bloodLayer.layer = 989;
+		
 		// Add entities
-		for (e in level.entities) {
+		var a = new Array<Entity>();
+		a = a.concat(level.entities);
+		for (e in a) {
 			add(e);
 		}
 		// Add enemies
 		for (e in level.enemies) {
-			add(e);
+			add(cast(e, Enemy).clone());
 		}
 		
+		// Player
+		if (player != null) {
+			remove(player);
+			player = null;
+		}
 		player = new Player(level.startingPos.x, level.startingPos.y);
 		add(player);
 		
-		cursor = new Cursor();
+		// Cursor color
 		cursor.changeColor(player.currentColor);
 		add(cursor);
 		
-		scoreText = new ScoreText();
-		scoreText.x = camera.x;
-		scoreText.y = camera.y;
-		add(scoreText);
-		
-		camCoeff = 0.2;
+		// Start
 		gameRunning = true;
-	}
-	
-	function reset () {
-		
 	}
 	
 	override public function update ()  {
@@ -103,11 +131,15 @@ class Protrotrype extends Scene {
 			player.dx += Main.TAP.x;
 			player.dy += Main.TAP.y;
 			
+			// Particles
+			if (Math.abs(player.dx) > 0.5 || Math.abs(player.dy) > 0.5)	particles.walk(player);
+			
 			// Shoot
 			if (Input.mousePressed) {
 				Main.TAP.x = this.mouseX - player.x;
 				Main.TAP.y = this.mouseY - player.y + 8;
 				Main.TAP.normalize(16);
+				// Spawn bullet
 				var b = new Bullet(player.x + Main.TAP.x, player.y + 8 + Main.TAP.y, player.currentColor);
 				Main.TAP.normalize(b.speed);
 				b.dx = Main.TAP.x;
@@ -120,19 +152,23 @@ class Protrotrype extends Scene {
 				player.cycleColors();
 				cursor.changeColor(player.currentColor);
 				// Shake
-				HXP.screen.shake(1, 0.2);
+				HXP.screen.shake(1, 0.1);
+				// Sound
+				SoundMan.shoot();
 			}
 			
 			// Swap
 			if (Input.rightMousePressed) {
 				player.swapColors();
 				cursor.changeColor(player.currentColor);
+				// Sound
+				SoundMan.swap();
 			}
 			
 			// Camera
-			Main.TAP.x = HXP.camera.x + (Main.TAP.x - HXP.camera.x) * camCoeff;
+			Main.TAP.x = HXP.camera.x + (Main.TAP.x - HXP.camera.x) * 0.2;
 			Main.TAP.x = HXP.clamp(player.x - VIEW_WIDTH / 2, 0, level.width - VIEW_WIDTH);
-			Main.TAP.y = HXP.camera.y + (Main.TAP.y - HXP.camera.y) * camCoeff;
+			Main.TAP.y = HXP.camera.y + (Main.TAP.y - HXP.camera.y) * 0.2;
 			Main.TAP.y = HXP.clamp(player.y - VIEW_HEIGHT / 2, 0, level.height - VIEW_HEIGHT);
 			HXP.setCamera(Std.int(Main.TAP.x), Std.int(Main.TAP.y));
 			
@@ -141,32 +177,56 @@ class Protrotrype extends Scene {
 			scoreText.y = camera.y;
 		}
 		
-		// Particles
-		if (Math.abs(player.dx) > 0.5 || Math.abs(player.dy) > 0.5)	particles.walk(player);
-		
 		cursor.x = mouseX - 6;
 		cursor.y = mouseY - 6;
 	}
 	
+	var restart:ClickableEntity;
+	
 	public function gameOver (win:Bool) {
+		// Stop the game
 		gameRunning = false;
+		
+		reset();
+		
+		// Get the mouse back
+		/*remove(cursor);
+		Mouse.show();
+		
+		// Capture?
+		var bd = HXP.buffer.clone();
 		
 		removeAll();
 		
-		/*HXP.screen.scale = 1;
+		camera.setTo(0, 0);
+		HXP.screen.scale = 1;
 		VIEW_WIDTH = Std.int(HXP.windowWidth / HXP.screen.scale);
-		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);*/
+		VIEW_HEIGHT = Std.int(HXP.windowHeight / HXP.screen.scale);
 		
-		/*HXP.setCamera(-(VIEW_WIDTH - level.width)/2, -(VIEW_HEIGHT - level.height)/2);
+		var i = new Image(bd);
+		i.scale = 2;
+		var e = new Entity(0, 0, i);
+		add(e);
 		
-		var title = new Text("Level cleared");
-		title.font = "fonts/MANIFESTO.ttf";
-		title.color = 0x000000;
-		title.size = 60;
-		title.centerOrigin();
-		var e = new Entity(HXP.halfWidth - HXP.camera.x / 4, HXP.halfHeight, title);
-		e.layer = -9999;
-		add(e);*/
+		// Display lose screen
+		if (!win) {
+			if (restart == null) {
+				var button = new Text("RESTART");
+				button.font = "fonts/MesquiteStd.otf";
+				button.color = 0;
+				button.size = 50;
+				button.centerOrigin();
+				restart = new ClickableEntity(camera.x + VIEW_WIDTH / 2, camera.y + VIEW_HEIGHT / 2, button);
+				restart.clickHandler = reset;
+				restart.layer = -99999;
+			}
+			add(restart);
+		}
+		// Display win screen
+		else {
+			trace("restart level, start next level, back to start screen?");
+			// TODO if not restart level, clean for real
+		}*/
 	}
 	
 }

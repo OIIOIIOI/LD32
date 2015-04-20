@@ -107,6 +107,10 @@ class Enemy extends MovingEntity {
 		shootTick = 0;
 	}
 	
+	public function clone () :Enemy {
+		return new Enemy(x, y, color);
+	}
+	
 	override public function update () :Void {
 		super.update();
 		
@@ -130,23 +134,29 @@ class Enemy extends MovingEntity {
 				scene.remove(b);
 				// Dead
 				if (health <= 0) {
+					// Anim
 					spritemap.play(A_DEAD);
-					
-					HXP.screen.shake(3, 0.2);
-					
+					// Blood
+					cast(scene, Protrotrype).particles.bloodStains(this);
+					// Shake
+					HXP.screen.shake(3, 0.3);
+					// Sound
+					SoundMan.enemyDie();
 					// Score
 					ScoreMan.awardShot(this);
 					
 					// Check if end of level
-					var enemies = cast(scene, Protrotrype).level.enemies;
-					cast(scene, Protrotrype).particles.bloodStains(this);
-					enemies.remove(this);
-					if (enemies.length == 0) {
+					var enemies = scene.entitiesForType(Protrotrype.T_ENEMY);
+					var alive = 0;
+					for (e in enemies) {
+						if (!cast(e, Enemy).isDead())	alive++;
+					}
+					if (alive == 0) {
 						Timer.delay(cast(scene, Protrotrype).gameOver.bind(true), 1000);
 					}
 					break;
 				} else {
-					HXP.screen.shake(1, 0.2);
+					HXP.screen.shake(2, 0.2);
 				}
 			}
 			// Reflect bullet
@@ -185,7 +195,7 @@ class Enemy extends MovingEntity {
 				switch (color) {
 					default:	spritemap.play(A_SHOOT);
 				}
-				
+				// Spawn bullet
 				var b = new Bullet(x, y, weakColor, false);
 				Main.TAP.x = player.x - x;
 				Main.TAP.y = player.y - y;
@@ -193,6 +203,13 @@ class Enemy extends MovingEntity {
 				b.dx = Main.TAP.x;
 				b.dy = Main.TAP.y;
 				scene.add(b);
+				// Sound
+				switch (color) {
+					case Color.BLUE:	SoundMan.indianShoot();
+					case Color.RED:		SoundMan.mexicanShoot();
+					case Color.YELLOW:	SoundMan.banditShoot();
+					default:
+				}
 			}
 		}
 	}

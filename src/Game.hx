@@ -16,9 +16,9 @@ class Game extends Engine {
 	public function new () {
 		super(1000, 600);
 		
-		HXP.console.enable();
+		/*HXP.console.enable();
 		HXP.console.debugDraw = true;
-		HXP.console.toggleKey = Key.TAB;
+		HXP.console.toggleKey = Key.TAB;*/
 		
 		HXP.screen.color = 0xAF8F69;
 		
@@ -28,8 +28,10 @@ class Game extends Engine {
 		Input.define("left", [Key.LEFT, Key.Q, Key.A]);
 		Input.define("enter", [Key.SPACE, Key.ENTER, Key.NUMPAD_ENTER]);
 		
-		HXP.scene = new Protrotrype();
-		//HXP.scene = new MenuScreen();
+		SoundMan.init();
+		
+		//HXP.scene = new Protrotrype();
+		HXP.scene = new MenuScreen();
 		
 		Mouse.hide();
 	}

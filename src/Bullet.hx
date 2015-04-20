@@ -70,11 +70,13 @@ class Bullet extends MovingEntity {
 		if (collide(Protrotrype.T_WALLS, x, y) != null) {
 			cast(scene, Protrotrype).particles.bulletHit(this);
 			scene.remove(this);
+			SoundMan.wallImpact();
 		}
 	}
 	
 	public function reflect () {
 		health--;// Lose health (limits number of bounces)
+		if (!isDead())	SoundMan.reflectBullet();
 		
 		if (type == Protrotrype.T_PLAYER_BULLET) {
 			type = Protrotrype.T_ENEMY_BULLET;

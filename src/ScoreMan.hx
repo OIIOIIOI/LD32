@@ -13,7 +13,7 @@ class ScoreMan {
 	static public var chain(default, null):Int;
 	static public var comboSteps:Array<Int>;
 	
-	static public function init () {
+	static public function reset () {
 		score = 0;
 		combo = 1;
 		chain = 0;
