@@ -24,7 +24,7 @@ class CreditsScreen extends Scene {
 	public function new () {
 		super();
 		
-		SoundMan.playMenuLevel();
+		SoundMan.playMenuCredits();
 		
 		HXP.screen.scale = 1;
 		
@@ -90,7 +90,7 @@ class CreditsScreen extends Scene {
 	
 	function goBack () {
 		SoundMan.nav();
-		SoundMan.playMenuLevel(true);
+		SoundMan.playMenuCredits(true);
 		removeAll();
 		HXP.scene = new SplashScreen(2);
 	}

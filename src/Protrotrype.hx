@@ -156,7 +156,7 @@ class Protrotrype extends Scene {
 				player.cycleColors();
 				cursor.changeColor(player.currentColor);
 				// Shake
-				HXP.screen.shake(1, 0.1);
+				HXP.screen.shake(Math.ceil(1 * Game.SHAKENESS), 0.1 * Game.SHAKENESS);
 				// Sound
 				SoundMan.shoot();
 			}

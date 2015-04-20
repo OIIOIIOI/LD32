@@ -132,7 +132,7 @@ class Player extends MovingEntity {
 				
 				health--;
 				if (health <= 0) {
-					HXP.screen.shake(7, 0.5);
+					HXP.screen.shake(Math.ceil(7 * Game.SHAKENESS), 0.5 * Game.SHAKENESS);
 					spritemap.play(A_DEATH);
 					gunSpritemap.visible = false;
 					reserveSpritemap.visible = false;
@@ -140,7 +140,7 @@ class Player extends MovingEntity {
 					Timer.delay(cast(scene, Protrotrype).gameOver.bind(false), 2000);
 					SoundMan.playerDie();
 				} else {
-					HXP.screen.shake(5, 0.3);
+					HXP.screen.shake(Math.ceil(5 * Game.SHAKENESS), 0.3 * Game.SHAKENESS);
 					spritemap.play(A_HIT);
 					gunSpritemap.visible = false;
 					reserveSpritemap.visible = false;

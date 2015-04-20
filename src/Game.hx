@@ -13,6 +13,8 @@ import openfl.ui.Mouse;
  */
 class Game extends Engine {
 	
+	static public var SHAKENESS:Float = 1;
+	
 	public function new () {
 		super(1000, 600);
 		
@@ -29,8 +31,8 @@ class Game extends Engine {
 		Input.define("enter", [Key.SPACE, Key.ENTER, Key.NUMPAD_ENTER]);
 		
 		SoundMan.init();
-		//SoundMan.playMenuMood();
-		SoundMan.playMusic();
+		SoundMan.playMenuMood();
+		//SoundMan.playMusic();
 		
 		//HXP.scene = new Protrotrype();
 		HXP.scene = new SplashScreen();

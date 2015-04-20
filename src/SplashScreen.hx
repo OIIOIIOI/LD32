@@ -129,7 +129,7 @@ class SplashScreen extends Scene {
 			}
 		} else if (step == 1) {
 			title.x += (270 - title.x) * 0.1;
-			cast(bar.graphic, Image).scaleY += (5 - cast(bar.graphic, Image).scaleY) * 0.1;
+			cast(bar.graphic, Image).scaleY += (5 - cast(bar.graphic, Image).scaleY) * 0.2;
 			if (5 - cast(bar.graphic, Image).scaleY < 0.01) {
 				displayMenu1();
 			}
@@ -146,7 +146,7 @@ class SplashScreen extends Scene {
 		startButton.x = 590;
 		add(startButton);
 		//
-		HXP.screen.shake(2, 0.2);
+		HXP.screen.shake(Math.ceil(2 * Game.SHAKENESS), 0.2 * Game.SHAKENESS);
 		SoundMan.playerImpact();
 		Timer.delay(displayMenu2, 75);
 	}
@@ -155,7 +155,7 @@ class SplashScreen extends Scene {
 		optionsButton.x = 740;
 		add(optionsButton);
 		//
-		HXP.screen.shake(2, 0.2);
+		HXP.screen.shake(Math.ceil(2 * Game.SHAKENESS), 0.2 * Game.SHAKENESS);
 		SoundMan.playerImpact();
 		Timer.delay(displayMenu3, 350);
 	}
@@ -168,7 +168,7 @@ class SplashScreen extends Scene {
 		optionsButton.clickHandler = goOptions;
 		creditsButton.clickHandler = goCredits;
 		//
-		HXP.screen.shake(2, 0.2);
+		HXP.screen.shake(Math.ceil(2 * Game.SHAKENESS), 0.2 * Game.SHAKENESS);
 		SoundMan.playerImpact();
 	}
 	

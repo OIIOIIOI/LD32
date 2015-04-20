@@ -139,7 +139,7 @@ class Enemy extends MovingEntity {
 					// Blood
 					cast(scene, Protrotrype).particles.bloodStains(this);
 					// Shake
-					HXP.screen.shake(3, 0.3);
+					HXP.screen.shake(Math.ceil(3 * Game.SHAKENESS), 0.3 * Game.SHAKENESS);
 					// Sound
 					SoundMan.enemyDie();
 					// Score
@@ -156,7 +156,7 @@ class Enemy extends MovingEntity {
 					}
 					break;
 				} else {
-					HXP.screen.shake(2, 0.2);
+					HXP.screen.shake(Math.ceil(2 * Game.SHAKENESS), 0.2 * Game.SHAKENESS);
 				}
 			}
 			// Reflect bullet

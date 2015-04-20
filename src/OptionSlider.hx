@@ -14,9 +14,9 @@ class OptionSlider extends ClickableEntity {
 	var notches:Array<Image>;
 	var setting:Int;
 	
-	public var value(get, null):Float;
+	public var value(get, set):Float;
 	
-	public function new (x:Float=0, y:Float=0) {
+	public function new (v:Float=1, x:Float=0, y:Float=0) {
 		super(x, y);
 		
 		notches = new Array();
@@ -34,8 +34,7 @@ class OptionSlider extends ClickableEntity {
 		
 		setHitbox(170, 44);
 		
-		setting = 5;
-		apply();
+		value = v;
 	}
 	
 	override public function update () :Void {
@@ -57,7 +56,13 @@ class OptionSlider extends ClickableEntity {
 	}
 	
 	function get_value () :Float {
-		return HXP.scaleClamp(setting, 0, 5, 0.001, 1);
+		return HXP.scaleClamp(setting, 0, 5, 0, 1);
+	}
+	
+	function set_value (v:Float) :Float {
+		setting = Std.int(v * 5);
+		apply();
+		return v;
 	}
 	
 }

@@ -10,16 +10,16 @@ import openfl.Assets;
  */
 class SoundMan {
 	
-	static var MUSIC_VOL:Float = 1;
-	static var SFX_VOL:Float = 1;
+	static public var MUSIC_VOL(default, null):Float = 1;
+	static public var SFX_VOL(default, null):Float = 1;
 	
 	static var menuMood:Sfx;
 	static var menuSplash:Sfx;
 	static var menuLevel:Sfx;
 	static var menuOptions:Sfx;
-	//static var menuCredits:Sfx;
+	static var menuCredits:Sfx;
 	
-	static var musicSFX:Sfx;
+	static var musicSFX:AdvancedSfx;
 	
 	static var swapSFX:Sfx;
 	static var shootSFX:Array<Sfx>;
@@ -41,8 +41,9 @@ class SoundMan {
 		menuSplash = new Sfx(Assets.getSound("snd/MenuSplash.mp3"));
 		menuLevel = new Sfx(Assets.getSound("snd/MenuLevel.mp3"));
 		menuOptions = new Sfx(Assets.getSound("snd/MenuOptions.mp3"));
+		menuCredits = new Sfx(Assets.getSound("snd/MenuCredits.mp3"));
 		
-		musicSFX = new Sfx(Assets.getSound("snd/v2.mp3"));
+		musicSFX = new AdvancedSfx(Assets.getSound("snd/v2.mp3"));
 		
 		swapSFX = new Sfx(Assets.getSound("snd/Gun Swap.mp3"));
 		
@@ -99,6 +100,7 @@ class SoundMan {
 		menuSplash.volume = menuSplash.volume / MUSIC_VOL * v;
 		menuLevel.volume = menuLevel.volume / MUSIC_VOL * v;
 		menuOptions.volume = menuOptions.volume / MUSIC_VOL * v;
+		menuCredits.volume = menuCredits.volume / MUSIC_VOL * v;
 		musicSFX.volume = musicSFX.volume / MUSIC_VOL * v;
 	}
 	
@@ -117,6 +119,10 @@ class SoundMan {
 	public static function playMenuOptions (stop:Bool = false, vol:Float = 0.2, pan:Float = 0) {
 		if (stop)	menuOptions.stop();
 		else		menuOptions.play(vol*MUSIC_VOL, pan, true);
+	}
+	public static function playMenuCredits (stop:Bool = false, vol:Float = 0.2, pan:Float = 0) {
+		if (stop)	menuCredits.stop();
+		else		menuCredits.play(vol*MUSIC_VOL, pan, true);
 	}
 	
 	public static function playMusic (vol:Float = 0.2, pan:Float = 0) { musicSFX.play(vol*MUSIC_VOL, pan, true); }

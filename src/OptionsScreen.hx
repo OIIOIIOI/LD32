@@ -97,15 +97,15 @@ class OptionsScreen extends Scene {
 		shakeText = new Entity(0, 0, t);
 		shakeText.y = 380;
 		
-		musicSlider = new OptionSlider();
+		musicSlider = new OptionSlider(SoundMan.MUSIC_VOL);
 		musicSlider.clickHandler = tweakVolumeMusic;
 		musicSlider.y = musicText.y + 3;
 		
-		sfxSlider = new OptionSlider();
+		sfxSlider = new OptionSlider(SoundMan.SFX_VOL);
 		sfxSlider.clickHandler = tweakVolumeSFX;
 		sfxSlider.y = sfxText.y + 3;
 		
-		shakeSlider = new OptionSlider();
+		shakeSlider = new OptionSlider(Game.SHAKENESS / 2);
 		shakeSlider.clickHandler = tweakShake;
 		shakeSlider.y = shakeText.y + 3;
 		
@@ -133,18 +133,20 @@ class OptionsScreen extends Scene {
 	}
 	
 	function tweakVolumeMusic () {
-		SoundMan.setMusicVol(musicSlider.value);
+		SoundMan.setMusicVol(Math.max(musicSlider.value, 0.0001));
 		SoundMan.nav(true);
 		//trace(musicSlider.value);
 	}
 	
 	function tweakVolumeSFX () {
-		SoundMan.setSFXVol(sfxSlider.value);
+		SoundMan.setSFXVol(Math.max(sfxSlider.value, 0.0001));
 		SoundMan.nav(true);
 		//trace(sfxSlider.value);
 	}
 	
 	function tweakShake () {
+		Game.SHAKENESS = shakeSlider.value * 2;
+		HXP.screen.shake(Math.ceil(2 * Game.SHAKENESS), 0.2 * Game.SHAKENESS);
 		SoundMan.nav(true);
 		//trace(shakeSlider.value);
 	}
