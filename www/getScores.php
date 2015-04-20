@@ -1,7 +1,7 @@
 <?php
 
 $lvl = 11;
-if (isset($_POST['lvl']))	$lvl = $_POST['lvl'];
+if (isset($_POST['level']))	$lvl = $_POST['level'];
 
 require_once "db.php";
 

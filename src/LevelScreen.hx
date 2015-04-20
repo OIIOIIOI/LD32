@@ -17,6 +17,11 @@ class LevelScreen extends Scene {
 	var bar:Entity;
 	var title:ClickableEntity;
 	
+	var scoreWanted:Wanted;
+	var timeWanted:Wanted;
+	
+	var number:LevelNumber;
+	
 	var backButton:ClickableEntity;
 	var prevButton:ClickableEntity;
 	var nextButton:ClickableEntity;
@@ -34,6 +39,18 @@ class LevelScreen extends Scene {
 		i.originY = 0;
 		background = new Entity(0, 0, i);
 		background.x = 500;
+		
+		scoreWanted = new Wanted(Wanted.T_SCORE, 0, 0);
+		scoreWanted.x = 250;
+		scoreWanted.y = 30;
+		
+		timeWanted = new Wanted(Wanted.T_TIME, 0, 0);
+		timeWanted.x = 750;
+		timeWanted.y = 30;
+		
+		number = new LevelNumber(0, 0);
+		number.x = 500;
+		number.y = 300;
 		
 		i = new Image("img/level_title.png");
 		i.centerOrigin();
@@ -68,7 +85,7 @@ class LevelScreen extends Scene {
 		t.angle = (Std.random(3) + 1) * (Std.random(2) * 2 - 1);
 		prevButton = new ClickableEntity(0, 0, t);
 		prevButton.clickHandler = selectNext.bind(-1);
-		prevButton.x = 260;
+		prevButton.x = 350;
 		prevButton.y = bar.y + 4;
 		
 		t = new Text(" > ");
@@ -79,11 +96,14 @@ class LevelScreen extends Scene {
 		t.angle = (Std.random(3) + 1) * (Std.random(2) * 2 - 1);
 		nextButton = new ClickableEntity(0, 0, t);
 		nextButton.clickHandler = selectNext.bind(1);
-		nextButton.x = 740;
+		nextButton.x = 650;
 		nextButton.y = bar.y + 4;
 		
 		// Add splash elements
 		add(background);
+		add(scoreWanted);
+		add(timeWanted);
+		add(number);
 		add(bar);
 		add(title);
 		add(backButton);
@@ -96,12 +116,23 @@ class LevelScreen extends Scene {
 	override public function update ()  {
 		super.update();
 		
-		background.x = HXP.scaleClamp(mouseX, 0, 1000, 525, 475);//50
+		background.x = HXP.scaleClamp(mouseX, 0, 1000, 510, 490);//20
+		scoreWanted.x = HXP.scaleClamp(mouseX, 0, 1000, 260, 240);//20
+		timeWanted.x = HXP.scaleClamp(mouseX, 0, 1000, 760, 740);//20
+		number.x = HXP.scaleClamp(mouseX, 0, 1000, 515, 485);//30
 	}
 	
 	function selectNext (delta:Int) {
+		var i = LevelMan.index;
 		LevelMan.index = Std.int(HXP.clamp(LevelMan.index + delta, 0, LevelMan.max));
-		
+		// Apply change
+		if (i != LevelMan.index) {
+			SoundMan.nav();
+			number.refresh();
+			scoreWanted.refresh();
+			timeWanted.refresh();
+		}
+		// Arrows
 		cast(prevButton.graphic, Text).alpha = cast(nextButton.graphic, Text).alpha = 1;
 		if (LevelMan.index == 0) {
 			cast(prevButton.graphic, Text).alpha = 0.2;
@@ -113,6 +144,7 @@ class LevelScreen extends Scene {
 	function startGame () {
 		SoundMan.nav(true);
 		SoundMan.playMenuLevel(true);
+		SoundMan.playMenuMood(true);
 		removeAll();
 		HXP.scene = new Protrotrype();
 	}

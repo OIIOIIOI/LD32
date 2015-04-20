@@ -43,4 +43,9 @@ class Game extends Engine {
 		HXP.scene = new LevelScreen();
 	}
 	
+	override public function update () {
+		SoundMan.update();
+		return super.update();
+	}
+	
 }

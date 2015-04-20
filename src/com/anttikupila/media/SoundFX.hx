@@ -81,13 +81,13 @@ class SoundFX extends Sound {
 
 	private var output : Sound;
 	private var bufferTimer : Timer;
-	private var soundChannel : SoundChannel;
+	public var soundChannel : SoundChannel;
 
 	private var stream : URLRequest;
 	private var samples : ByteArray;
 	
 	private var loops : Int;
-	private var soundTransform : SoundTransform;
+	public var soundTransform : SoundTransform;
 	public var buffering(get, null) : Bool;
 	private var sampleIndex : Int = 0;
 
@@ -184,8 +184,8 @@ class SoundFX extends Sound {
 					// Input silence into filters while paused or buffering
 					left = right = 0;
 				} else {
-					left = samples.readFloat( );
-					right = samples.readFloat( );
+					left = samples.readFloat();
+					right = samples.readFloat();
 				}
 				
 				for ( filter in _filtersLeft ) {

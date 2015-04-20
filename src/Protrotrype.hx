@@ -51,6 +51,7 @@ class Protrotrype extends Scene {
 		// Generate level
 		ready = false;
 		//level = new LevelExt(loaded);
+		//level = new Level(LevelMan.index, true);
 		level = new Level(LevelMan.index);
 		loaded();
 	}
@@ -70,7 +71,7 @@ class Protrotrype extends Scene {
 		scoreText.y = camera.y;
 		
 		// Music
-		SoundMan.playMusic();
+		SoundMan.playMusic();// TODO check if already playing from previous level
 		
 		// Reset
 		reset();
@@ -120,6 +121,8 @@ class Protrotrype extends Scene {
 			player = null;
 		}
 		player = new Player(level.startingPos.x, level.startingPos.y);
+		player.x += Level.GRID_SIZE / 2;
+		player.y += Level.GRID_SIZE / 2;
 		add(player);
 		
 		// Cursor color

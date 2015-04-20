@@ -1,10 +1,16 @@
 package ;
 
 import com.anttikupila.media.CustomSoundFX;
+import com.anttikupila.media.filters.LowpassFilter;
+import com.anttikupila.media.filters.VolumeFilter;
+import com.anttikupila.media.filters.VolumeFilter;
 import com.haxepunk.HXP;
 import com.haxepunk.Sfx;
+import haxe.xml.Check.Filter;
 import openfl.Assets;
+import openfl.events.Event;
 import openfl.media.SoundChannel;
+import openfl.media.SoundTransform;
 
 /**
  * ...
@@ -21,8 +27,8 @@ class SoundMan {
 	static var menuOptions:Sfx;
 	static var menuCredits:Sfx;
 	
-	static var musicSFX:AdvancedSfx;
-	//static var musicSFX:CustomSoundFX;
+	//static var musicSFX:AdvancedSfx;
+	public static var musicSFX:CustomSoundFX;
 	//static var musicChannel:SoundChannel;
 	
 	static var swapSFX:Sfx;
@@ -39,6 +45,13 @@ class SoundMan {
 	static var playerDieSFX:Sfx;
 	static var walkOnSandSFX:Sfx;
 	static var navSFX:Sfx;
+	static var winSFX:Sfx;
+	static var loseSFX:Sfx;
+	
+	static var lowpass:LowpassFilter;
+	static var volFilter:VolumeFilter;
+	static var lowpassTarget:Int;
+	static var mainTransform:SoundTransform;
 	
 	public static function init () {
 		menuMood = new Sfx(Assets.getSound("snd/MenuMood.mp3"));
@@ -47,8 +60,8 @@ class SoundMan {
 		menuOptions = new Sfx(Assets.getSound("snd/MenuOptions.mp3"));
 		menuCredits = new Sfx(Assets.getSound("snd/MenuCredits.mp3"));
 		
-		musicSFX = new AdvancedSfx(Assets.getSound("snd/v2.mp3"));
-		//musicSFX = new CustomSoundFX(asfx.getSound());
+		//asfx = new AdvancedSfx(Assets.getSound("snd/v2.mp3"));
+		musicSFX = new CustomSoundFX(Assets.getSound("snd/v2.mp3"));
 		
 		swapSFX = new Sfx(Assets.getSound("snd/Gun Swap.mp3"));
 		
@@ -86,6 +99,15 @@ class SoundMan {
 		walkOnSandSFX = new Sfx(Assets.getSound("snd/Walk on Sand.mp3"));
 		
 		navSFX = new Sfx(Assets.getSound("snd/Navigation.mp3"));
+		
+		winSFX = new Sfx(Assets.getSound("snd/MenuWin.mp3"));
+		loseSFX = new Sfx(Assets.getSound("snd/MenuLoose.mp3"));
+		
+		lowpassTarget = 22000;
+		lowpass = new LowpassFilter(lowpassTarget);
+		//volFilter = new VolumeFilter();
+		musicSFX.filters = [lowpass];
+		mainTransform = new SoundTransform();
 	}
 	
 	public static function setMusicVol (v:Float) {
@@ -106,8 +128,9 @@ class SoundMan {
 		menuLevel.volume = menuLevel.volume / MUSIC_VOL * v;
 		menuOptions.volume = menuOptions.volume / MUSIC_VOL * v;
 		menuCredits.volume = menuCredits.volume / MUSIC_VOL * v;
-		musicSFX.volume = musicSFX.volume / MUSIC_VOL * v;
-		//musicSFX.
+		//musicSFX.volume = musicSFX.volume / MUSIC_VOL * v;
+		mainTransform.volume = 0.2 * v;
+		//if (musicSFX != null && musicSFX.soundChannel != null)	musicSFX.soundChannel.soundTransform = mainTransform;
 	}
 	
 	public static function playMenuMood (stop:Bool = false, vol:Float = 0.2, pan:Float = 0) {
@@ -132,8 +155,26 @@ class SoundMan {
 	}
 	
 	public static function playMusic (vol:Float = 0.2, pan:Float = 0) {
-		musicSFX.play(vol*MUSIC_VOL, pan, true);
+		//musicSFX.play(vol*MUSIC_VOL, pan, true);
+		musicSFX.play(0, 0, mainTransform);
+		musicSFX.soundChannel.addEventListener(Event.SOUND_COMPLETE, mainLoop);
+		//musicSFX.filters = [lowpass];
 		//musicChannel = musicSFX.play();
+	}
+	
+	static function mainLoop (e:Event) {
+		e.currentTarget.removeEventListener(Event.SOUND_COMPLETE, mainLoop);
+		musicSFX.play(0, 0, mainTransform);
+		musicSFX.soundChannel.addEventListener(Event.SOUND_COMPLETE, mainLoop);
+	}
+	
+	public static function setFilter (v:Int) {
+		lowpassTarget = v;
+	}
+	
+	public static function update () {
+		// TODO lineaire ?
+		lowpass.cutoffFrequency = Std.int(lowpass.cutoffFrequency + (lowpassTarget - lowpass.cutoffFrequency) * 0.1);
 	}
 	
 	public static function swap (vol:Float = 0.3, pan:Float = 0) { swapSFX.play(vol*SFX_VOL, pan); }
@@ -176,5 +217,8 @@ class SoundMan {
 		if (splash)	navSFX.play(vol*SFX_VOL, pan);
 		else		indianShootSFX.play(vol*SFX_VOL, pan);
 	}
+	
+	public static function win (vol:Float = 0.5, pan:Float = 0) { winSFX.play(vol*SFX_VOL, pan); }
+	public static function lose (vol:Float = 0.5, pan:Float = 0) { loseSFX.play(vol*SFX_VOL, pan); }
 	
 }

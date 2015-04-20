@@ -9,6 +9,7 @@ import com.haxepunk.utils.Input;
 import haxe.Timer;
 import openfl.display.BitmapData;
 import openfl.events.Event;
+import openfl.media.SoundTransform;
 import openfl.net.URLLoader;
 
 /**
@@ -135,7 +136,7 @@ class SplashScreen extends Scene {
 			}
 		}
 	}
-	
+	//
 	function makeRoomForMenu () {
 		SoundMan.nav();
 		step++;

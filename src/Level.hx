@@ -30,8 +30,14 @@ class Level {
 	public var floor:Entity;
 	public var floorData:BitmapData;
 	
+	public var isTuto:Bool;
+	
+	public static function getData (n:Int) :BitmapData {
+		return Assets.getBitmapData("img/level" + n + ".png");
+	}
+	
 	public function new (n:Int) {
-		data = Assets.getBitmapData("img/level" + n + ".png");
+		data = getData(n);
 		if (data == null)	throw new Error("Level not found");
 		
 		entities = new Array();
@@ -58,26 +64,23 @@ class Level {
 			for (xx in 0...data.width) {
 				p = data.getPixel(xx, yy);
 				if (p == 0x000000) {
-					//var full = data.getPixel(xx, yy + 1) == 0x000000;
-					//var top = full && data.getPixel(xx, yy - 1) != 0x000000;
-					//var both = data.getPixel(xx, yy + 1) != 0x000000 && data.getPixel(xx, yy - 1) != 0x000000;
 					e = new Wall(xx * GRID_SIZE, yy * GRID_SIZE, data.getPixel(xx, yy + 1), data.getPixel(xx, yy - 1));
 					entities.push(e);
 				} else if (p == 0xFF0000) {
-					//e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
-					e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
+					if (isTuto)	e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
+					else		e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
 					e.x += GRID_SIZE / 2;
 					e.y += GRID_SIZE / 2;
 					enemies.push(e);
 				} else if (p == 0xFFFF00) {
-					//e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
-					e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
+					if (isTuto)	e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
+					else		e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
 					e.x += GRID_SIZE / 2;
 					e.y += GRID_SIZE / 2;
 					enemies.push(e);
 				} else if (p == 0x0000FF) {
-					//e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
-					e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
+					if (isTuto)	e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
+					else		e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
 					e.x += GRID_SIZE / 2;
 					e.y += GRID_SIZE / 2;
 					enemies.push(e);

@@ -50,7 +50,7 @@ class ScoreMan {
 		cast(HXP.scene, Protrotrype).scoreText.setCombo(combo);
 	}
 	
-	static public function save (level:Int, pseudo:String, score:Int, time:Int, ?cb:Event->Void) {
+	static public function save (level:Int, pseudo:String, score:Int, time:Int, ?cb:Event->Void, ?failcb:IOErrorEvent->Void) {
 		var vars:URLVariables = new URLVariables();
 		vars.level = level;
 		vars.pseudo = pseudo;
@@ -64,11 +64,11 @@ class ScoreMan {
 		var loader:URLLoader = new URLLoader();
 		loader.dataFormat = URLLoaderDataFormat.VARIABLES;
 		if (cb != null)	loader.addEventListener(Event.COMPLETE, cb);
-		loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
+		if (failcb != null)	loader.addEventListener(IOErrorEvent.IO_ERROR, failcb);
 		loader.load(req);
 	}
 	
-	static public function get (level:Int, ?cb:Event->Void) {
+	static public function get (level:Int, ?cb:Event->Void, ?failcb:IOErrorEvent->Void) {
 		var vars:URLVariables = new URLVariables();
 		vars.level = level;
 		
@@ -78,12 +78,12 @@ class ScoreMan {
 		
 		var loader:URLLoader = new URLLoader();
 		loader.dataFormat = URLLoaderDataFormat.VARIABLES;
-		if (cb != null)	loader.addEventListener(Event.COMPLETE, cb);
-		loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
+		if (cb != null)		loader.addEventListener(Event.COMPLETE, cb);
+		if (failcb != null)	loader.addEventListener(IOErrorEvent.IO_ERROR, failcb);
 		loader.load(req);
 	}
 	
-	static function errorHandler (e:IOErrorEvent) { }
+	//static function errorHandler (e:IOErrorEvent) { trace(e); }
 	
 	//ScoreMan.get.bind(11, gotTheScores);
 	//ScoreMan.save.bind(11, "01101101", Std.random(999999), Std.random(999999));

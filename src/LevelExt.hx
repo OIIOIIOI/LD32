@@ -41,8 +41,8 @@ class LevelExt {
 		
 		var l = new Loader();
 		l.contentLoaderInfo.addEventListener(Event.COMPLETE, loaded);
-		l.load(new URLRequest("../../../assets/img/level1.png"));
-		//l.load(new URLRequest("level99.png"));
+		//l.load(new URLRequest("../../../assets/img/level1.png"));
+		l.load(new URLRequest("level99.png"));
 	}
 	
 	function loaded (ev:Event) {

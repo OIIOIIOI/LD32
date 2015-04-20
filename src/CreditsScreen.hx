@@ -5,6 +5,7 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Text;
 import com.haxepunk.HXP;
 import com.haxepunk.Scene;
+import haxe.Timer;
 import openfl.display.BitmapData;
 
 /**
@@ -78,6 +79,16 @@ class CreditsScreen extends Scene {
 		add(bar);
 		add(title);
 		add(backButton);
+		
+		/*SoundMan.setFilter(80);
+		SoundMan.enemyDie();
+		Timer.delay(SoundMan.win.bind(), 500);
+		Timer.delay(SoundMan.setFilter.bind(1000), 5000);*/
+		/*SoundMan.setFilter(80);
+		SoundMan.playerImpact();
+		SoundMan.playerDie();
+		Timer.delay(SoundMan.lose.bind(), 2500);
+		Timer.delay(SoundMan.setFilter.bind(1000), 7000);*/
 	}
 	
 	override public function update ()  {
