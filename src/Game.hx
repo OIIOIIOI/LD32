@@ -29,10 +29,13 @@ class Game extends Engine {
 		Input.define("enter", [Key.SPACE, Key.ENTER, Key.NUMPAD_ENTER]);
 		
 		SoundMan.init();
-		//SoundMan.playMusic();
+		//SoundMan.playMenuMood();
+		SoundMan.playMusic();
 		
 		//HXP.scene = new Protrotrype();
 		HXP.scene = new SplashScreen();
+		//HXP.scene = new CreditsScreen();
+		//HXP.scene = new OptionsScreen();
 	}
 	
 }

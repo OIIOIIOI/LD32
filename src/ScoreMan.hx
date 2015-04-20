@@ -1,6 +1,14 @@
 package ;
 
 import com.haxepunk.HXP;
+import flash.events.Event;
+import flash.events.IOErrorEvent;
+import flash.net.URLLoader;
+import flash.net.URLLoaderDataFormat;
+import flash.net.URLRequest;
+import flash.net.URLRequestMethod;
+import flash.net.URLVariables;
+import openfl.events.Event;
 
 /**
  * ...
@@ -41,5 +49,47 @@ class ScoreMan {
 		// Update GUI
 		cast(HXP.scene, Protrotrype).scoreText.setCombo(combo);
 	}
+	
+	static public function save (level:Int, pseudo:String, score:Int, time:Int, ?cb:Event->Void) {
+		var vars:URLVariables = new URLVariables();
+		vars.level = level;
+		vars.pseudo = pseudo;
+		vars.score = score;
+		vars.time = time;
+		
+		var req:URLRequest = new URLRequest("save.php");
+		req.method = URLRequestMethod.POST;
+		req.data = vars;
+		
+		var loader:URLLoader = new URLLoader();
+		loader.dataFormat = URLLoaderDataFormat.VARIABLES;
+		if (cb != null)	loader.addEventListener(Event.COMPLETE, cb);
+		loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
+		loader.load(req);
+	}
+	
+	static public function get (level:Int, ?cb:Event->Void) {
+		var vars:URLVariables = new URLVariables();
+		vars.level = level;
+		
+		var req:URLRequest = new URLRequest("getScores.php");
+		req.method = URLRequestMethod.POST;
+		req.data = vars;
+		
+		var loader:URLLoader = new URLLoader();
+		loader.dataFormat = URLLoaderDataFormat.VARIABLES;
+		if (cb != null)	loader.addEventListener(Event.COMPLETE, cb);
+		loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
+		loader.load(req);
+	}
+	
+	static function errorHandler (e:IOErrorEvent) { }
+	
+	//ScoreMan.get.bind(11, gotTheScores);
+	//ScoreMan.save.bind(11, "01101101", Std.random(999999), Std.random(999999));
+	/*function gotTheScores (e:Event) {
+		var l:URLLoader = cast(e.currentTarget);
+		trace(l.data.sp + ", " + l.data.sv + ", " + l.data.tp + ", " + l.data.tv);
+	}*/
 	
 }

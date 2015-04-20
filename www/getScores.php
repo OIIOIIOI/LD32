@@ -1,52 +1,31 @@
 <?php
 
-$lvl = $_GET['lvl'];
+$lvl = 11;
+if (isset($_POST['lvl']))	$lvl = $_POST['lvl'];
 
 require_once "db.php";
 
-// Prepare and execute statement
-$stmt = mysqli_prepare($db, "SELECT pseudo, score FROM scores WHERE level=? ORDER BY score LIMIT 10");
-mysqli_stmt_bind_param($stmt, 's', $lvl);
-mysqli_stmt_execute($stmt);
+$scorePseudo = "Unknown";
+$scoreValue = -1;
+$timePseudo = "Unknown";
+$timeValue = -1;
 
-mysqli_stmt_bind_result($stmt, $r_pseudo, $r_score);
-$init = false;
-while (mysqli_stmt_fetch($stmt)) {
-	if (!$init) {
-		echo '
-			<tr>
-				<th align="left">PSEUDO</th>
-				<th align="right">SCORE</th>
-			</tr>
-		';
-		$init = true;
-	}
-	echo '
-		<tr>
-			<td align="left">'.$r_pseudo.'</td>
-			<td align="right">'.$r_score.'</td>
-		</tr>
-	';
-}
+$stmt = $mysqli->prepare("SELECT pseudo, score FROM leaderboard WHERE level=? ORDER BY score DESC LIMIT 1");
+$stmt->bind_param("i", $lvl);
+$stmt->execute();
+$stmt->bind_result($scorePseudo, $scoreValue);
+$stmt->fetch();
+$stmt->close();
 
-mysqli_stmt_close($stmt);
+$stmt = $mysqli->prepare("SELECT pseudo, time FROM leaderboard WHERE level=? ORDER BY time ASC LIMIT 1");
+$stmt->bind_param("i", $lvl);
+$stmt->execute();
+$stmt->bind_result($timePseudo, $timeValue);
+$stmt->fetch();
+$stmt->close();
 
-function getName ($l) {
-	switch ($l) {
-		case "LBeluga":		return "Bebop Beluga";
-		case "LBoat":		return "Rainbow Tanker";
-		case "LClam":		return "Drunken Clam";
-		case "LEel":		return "Golden Eel";
-		case "LJellyfish":	return "Jealous Jellyfish";
-		case "LOtter":		return "One-eyed Otter";
-		case "LRusty":		return "Rusty Tuna Can";
-		case "LSeagull":	return "Seven Seagull";
-		case "LShark":		return "Neurasthenic Shark";
-		case "LSpliff":		return "Sea Weed Spliff";
-		case "LSquid":		return "Kinky Squid";
-		case "LWalrus":		return "Toothless Walrus";
-		default:			return "--";
-	}
-}
+$mysqli->close();
+
+echo 'sp='.$scorePseudo.'&sv='.$scoreValue.'&tp='.$timePseudo.'&tv='.$timeValue;
 
 ?>

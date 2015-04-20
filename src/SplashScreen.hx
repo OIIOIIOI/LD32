@@ -8,6 +8,8 @@ import com.haxepunk.Scene;
 import com.haxepunk.utils.Input;
 import haxe.Timer;
 import openfl.display.BitmapData;
+import openfl.events.Event;
+import openfl.net.URLLoader;
 
 /**
  * ...
@@ -18,7 +20,7 @@ class SplashScreen extends Scene {
 	var background:Entity;
 	var char:Entity;
 	var bar:Entity;
-	var title:ClickableEntity;
+	var title:Entity;
 	
 	var startButton:ClickableEntity;
 	var optionsButton:ClickableEntity;
@@ -26,13 +28,14 @@ class SplashScreen extends Scene {
 	
 	var step:Int;
 	
-	public function new () {
+	public function new (s:Int = 0) {
 		super();
+		
+		SoundMan.playMenuSplash();
 		
 		HXP.screen.scale = 1;
 		
 		// Splash
-		
 		var i = new Image("img/splash.png");
 		i.centerOrigin();
 		i.originY = 0;
@@ -47,8 +50,8 @@ class SplashScreen extends Scene {
 		
 		i = new Image("img/splash_title.png");
 		i.centerOrigin();
-		title = new ClickableEntity(0, 0, i);
-		title.clickHandler = makeRoomForMenu;
+		title = new Entity(0, 0, i);
+		//title.clickHandler = makeRoomForMenu;
 		title.x = 500;
 		title.y = 520;
 		
@@ -59,13 +62,12 @@ class SplashScreen extends Scene {
 		bar.y = title.y;
 		
 		// Menu
-		
 		var t = new Text("START");
 		t.font = "fonts/MesquiteStd.otf";
 		t.color = 0xFFFFFF;
 		t.size = 48;
 		t.centerOrigin();
-		t.angle = (Std.random(3) + 2) * (Std.random(2) * 2 - 1);
+		t.angle = (Std.random(3) + 1) * (Std.random(2) * 2 - 1);
 		startButton = new ClickableEntity(0, 0, t);
 		startButton.y = bar.y + 4;
 		
@@ -74,7 +76,7 @@ class SplashScreen extends Scene {
 		t.color = 0xFFFFFF;
 		t.size = 48;
 		t.centerOrigin();
-		t.angle = (Std.random(3) + 2) * (Std.random(2) * 2 - 1);
+		t.angle = (Std.random(3) + 1) * (Std.random(2) * 2 - 1);
 		optionsButton = new ClickableEntity(0, 0, t);
 		optionsButton.y = bar.y + 4;
 		
@@ -83,33 +85,49 @@ class SplashScreen extends Scene {
 		t.color = 0xFFFFFF;
 		t.size = 48;
 		t.centerOrigin();
-		t.angle = (Std.random(3) + 2) * (Std.random(2) * 2 - 1);
+		t.angle = (Std.random(3) + 1) * (Std.random(2) * 2 - 1);
 		creditsButton = new ClickableEntity(0, 0, t);
 		creditsButton.y = bar.y + 4;
 		
 		// Add splash elements
-		
 		add(background);
 		add(char);
 		add(bar);
 		add(title);
 		
-		step = 0;
+		step = s;
+		if (step == 2) {
+			title.x = 270;
+			cast(bar.graphic, Image).scaleY = 5;
+			startButton.x = 590;
+			add(startButton);
+			optionsButton.x = 740;
+			add(optionsButton);
+			creditsButton.x = 890;
+			add(creditsButton);
+			startButton.clickHandler = startGame;
+			optionsButton.clickHandler = goOptions;
+			creditsButton.clickHandler = goCredits;
+		}
 	}
 	
 	override public function update ()  {
 		super.update();
 		
+		if (step == 0 && Input.mousePressed) {
+			makeRoomForMenu();
+		}
+		
+		background.x = HXP.scaleClamp(mouseX, 0, 1000, 525, 475);//50
+		if (step > 0)	char.x = HXP.scaleClamp(mouseX, 0, 1000, 305, 235);//70
+		
 		if (step == 0) {
-			background.x = HXP.scaleClamp(mouseX, 0, 1000, 525, 475);
-			char.x = HXP.scaleClamp(mouseX, 0, 1000, 535, 465);
-			title.x = HXP.scaleClamp(mouseX, 0, 1000, 550, 450);
+			char.x = HXP.scaleClamp(mouseX, 0, 1000, 535, 465);//70
+			title.x = HXP.scaleClamp(mouseX, 0, 1000, 550, 450);//100
 			if (Input.released("enter")) {
 				makeRoomForMenu();
 			}
 		} else if (step == 1) {
-			background.x += (500 - background.x) * 0.1;
-			char.x += (270 - char.x) * 0.1;
 			title.x += (270 - title.x) * 0.1;
 			cast(bar.graphic, Image).scaleY += (5 - cast(bar.graphic, Image).scaleY) * 0.1;
 			if (5 - cast(bar.graphic, Image).scaleY < 0.01) {
@@ -121,7 +139,6 @@ class SplashScreen extends Scene {
 	function makeRoomForMenu () {
 		SoundMan.nav();
 		step++;
-		title.clickHandler = null;
 	}
 	
 	function displayMenu1 () {
@@ -148,17 +165,32 @@ class SplashScreen extends Scene {
 		add(creditsButton);
 		//
 		startButton.clickHandler = startGame;
-		optionsButton.clickHandler = startGame;
-		creditsButton.clickHandler = startGame;
+		optionsButton.clickHandler = goOptions;
+		creditsButton.clickHandler = goCredits;
 		//
 		HXP.screen.shake(2, 0.2);
 		SoundMan.playerImpact();
 	}
 	
 	function startGame () {
-		SoundMan.nav();
+		SoundMan.nav(true);
+		SoundMan.playMenuSplash(true);
 		removeAll();
 		HXP.scene = new Protrotrype();
+	}
+	
+	function goOptions () {
+		SoundMan.nav(true);
+		SoundMan.playMenuSplash(true);
+		removeAll();
+		HXP.scene = new OptionsScreen();
+	}
+	
+	function goCredits () {
+		SoundMan.nav(true);
+		SoundMan.playMenuSplash(true);
+		removeAll();
+		HXP.scene = new CreditsScreen();
 	}
 	
 }
