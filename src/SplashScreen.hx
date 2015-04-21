@@ -32,6 +32,7 @@ class SplashScreen extends Scene {
 	public function new (s:Int = 0) {
 		super();
 		
+		if (!SoundMan.menuMood.playing)	SoundMan.playMenuMood();
 		SoundMan.playMenuSplash();
 		
 		HXP.screen.scale = 1;

@@ -41,6 +41,7 @@ class Game extends Engine {
 		//HXP.scene = new CreditsScreen();
 		//HXP.scene = new OptionsScreen();
 		//HXP.scene = new LevelScreen();
+		//HXP.scene = new GameOverScreen(true);
 	}
 	
 	override public function update () {

@@ -73,7 +73,7 @@ class Protrotrype extends Scene {
 		scoreText.y = camera.y;
 		
 		// Music
-		SoundMan.playMusic();// TODO check if already playing from previous level
+		if (SoundMan.musicSFX.soundChannel == null)	SoundMan.playMusic();// TODO check if already playing from previous level
 		
 		// Reset
 		reset();
@@ -217,7 +217,7 @@ class Protrotrype extends Scene {
 		
 		var bd = HXP.buffer.clone();
 		
-		if (win) LevelMan.index++;
+		//if (win) LevelMan.index++;
 		
 		HXP.screen.color = 0xffffff;
 		removeAll();

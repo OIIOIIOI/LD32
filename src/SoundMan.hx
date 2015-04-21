@@ -21,7 +21,7 @@ class SoundMan {
 	static public var MUSIC_VOL(default, null):Float = 1;
 	static public var SFX_VOL(default, null):Float = 1;
 	
-	static var menuMood:Sfx;
+	static public var menuMood:Sfx;
 	static var menuSplash:Sfx;
 	static var menuLevel:Sfx;
 	static var menuOptions:Sfx;
@@ -211,7 +211,7 @@ class SoundMan {
 		if (!walkOnSandSFX.playing)	walkOnSandSFX.play(vol * SFX_VOL, pan, true);
 	}
 	public static function stopOnSand () {
-		if (walkOnSandSFX.playing)	walkOnSandSFX.stop();
+		walkOnSandSFX.stop();
 	}
 	
 	public static function nav (splash:Bool = false, vol:Float = 0.3, pan:Float = 0) {
