@@ -67,6 +67,7 @@ class ScoreMan {
 		loader.dataFormat = URLLoaderDataFormat.VARIABLES;
 		if (cb != null)	loader.addEventListener(Event.COMPLETE, cb);
 		if (failcb != null)	loader.addEventListener(IOErrorEvent.IO_ERROR, failcb);
+		else				loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
 		loader.load(req);
 	}
 	
@@ -82,10 +83,11 @@ class ScoreMan {
 		loader.dataFormat = URLLoaderDataFormat.VARIABLES;
 		if (cb != null)		loader.addEventListener(Event.COMPLETE, cb);
 		if (failcb != null)	loader.addEventListener(IOErrorEvent.IO_ERROR, failcb);
+		else				loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
 		loader.load(req);
 	}
 	
-	//static function errorHandler (e:IOErrorEvent) { trace(e); }
+	static function errorHandler (e:IOErrorEvent) { trace(e); }
 	
 	//ScoreMan.get.bind(11, gotTheScores);
 	//ScoreMan.save.bind(11, "01101101", Std.random(999999), Std.random(999999));

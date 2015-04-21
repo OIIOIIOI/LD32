@@ -28,6 +28,10 @@ class GameOverScreen extends Scene {
 		
 		win = won;
 		
+		if (win) {
+			ScoreMan.save(LevelMan.index, "ANONYMOUS", ScoreMan.score, 0);
+		}
+		
 		HXP.screen.scale = 1;
 		
 		var i:Image;

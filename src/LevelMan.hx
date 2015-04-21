@@ -10,7 +10,7 @@ class LevelMan {
 	public static var max:Int;
 	
 	public static function init () {
-		max = 9;
+		max = 7;
 	}
 	
 }

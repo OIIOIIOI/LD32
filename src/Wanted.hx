@@ -78,7 +78,7 @@ class Wanted extends Entity {
 	}
 	
 	function fail (e:Event) {
-		var pseudo:String = (theType == T_SCORE) ? "CAN'T REACH" : "THE SERVER";
+		var pseudo:String = (theType == T_SCORE) ? "NO SERVER" : "THE SERVER";
 		var value:Int = 0;
 		var rotation = Std.random(4) + 2;
 		if (theType == T_SCORE)	rotation = -rotation;
