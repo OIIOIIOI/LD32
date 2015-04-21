@@ -107,7 +107,7 @@ class Enemy extends MovingEntity {
 		shootTick = 0;
 	}
 	
-	public function clone () :Enemy {
+	override public function clone () :Enemy {
 		return new Enemy(x, y, color);
 	}
 	
@@ -122,6 +122,15 @@ class Enemy extends MovingEntity {
 			shootTick -= shootInterval;
 		}
 		
+		collBullets();
+		
+		// Animation
+		if (spritemap.currentAnim != A_IDLE && spritemap.complete) {
+			spritemap.play(A_IDLE);
+		}
+	}
+	
+	function collBullets () {
 		var b:Bullet;
 		var a:Array<Entity> = new Array();
 		collideInto(Protrotrype.T_PLAYER_BULLET, x, y, a);
@@ -136,7 +145,7 @@ class Enemy extends MovingEntity {
 				if (health <= 0) {
 					// Anim
 					spritemap.play(A_DEAD);
-					getHurt();
+					getHurt(b.color == Color.WHITE);
 					// Shake
 					HXP.screen.shake(Math.ceil(3 * Game.SHAKENESS), 0.3 * Game.SHAKENESS);
 					
@@ -162,20 +171,15 @@ class Enemy extends MovingEntity {
 			}
 		}
 		a = null;
-		
-		// Animation
-		if (spritemap.currentAnim != A_IDLE && spritemap.complete) {
-			spritemap.play(A_IDLE);
-		}
 	}
 	
-	function getHurt () {
+	function getHurt (white:Bool = false) {
 		// Blood
 		cast(scene, Protrotrype).particles.bloodStains(this);
 		// Sound
 		SoundMan.enemyDie();
 		// Score
-		ScoreMan.awardShot(this);
+		ScoreMan.awardShot(this, white);
 	}
 	
 	function shoot () {

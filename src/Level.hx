@@ -33,7 +33,7 @@ class Level {
 	public var isTuto:Bool;
 	
 	public static function getData (n:Int) :BitmapData {
-		return Assets.getBitmapData("img/level" + n + ".png");
+		return Assets.getBitmapData("img/level_" + n + ".png");
 	}
 	
 	public function new (n:Int) {
@@ -67,20 +67,47 @@ class Level {
 					e = new Wall(xx * GRID_SIZE, yy * GRID_SIZE, data.getPixel(xx, yy + 1), data.getPixel(xx, yy - 1));
 					entities.push(e);
 				} else if (p == 0xFF0000) {
-					if (isTuto)	e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
-					else		e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
+					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
 					e.x += GRID_SIZE / 2;
 					e.y += GRID_SIZE / 2;
 					enemies.push(e);
 				} else if (p == 0xFFFF00) {
-					if (isTuto)	e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
-					else		e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
+					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
 					e.x += GRID_SIZE / 2;
 					e.y += GRID_SIZE / 2;
 					enemies.push(e);
 				} else if (p == 0x0000FF) {
-					if (isTuto)	e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
-					else		e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
+					e = new Enemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
+					e.x += GRID_SIZE / 2;
+					e.y += GRID_SIZE / 2;
+					enemies.push(e);
+				} else if (p == 0x990000) {
+					e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
+					e.x += GRID_SIZE / 2;
+					e.y += GRID_SIZE / 2;
+					enemies.push(e);
+				} else if (p == 0x999900) {
+					e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
+					e.x += GRID_SIZE / 2;
+					e.y += GRID_SIZE / 2;
+					enemies.push(e);
+				} else if (p == 0x000099) {
+					e = new FakeEnemy(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
+					e.x += GRID_SIZE / 2;
+					e.y += GRID_SIZE / 2;
+					enemies.push(e);
+				} else if (p == 0xCC0000) {
+					e = new Turret(xx * GRID_SIZE, yy * GRID_SIZE, Color.RED);
+					e.x += GRID_SIZE / 2;
+					e.y += GRID_SIZE / 2;
+					enemies.push(e);
+				} else if (p == 0xCCCC00) {
+					e = new Turret(xx * GRID_SIZE, yy * GRID_SIZE, Color.YELLOW);
+					e.x += GRID_SIZE / 2;
+					e.y += GRID_SIZE / 2;
+					enemies.push(e);
+				} else if (p == 0x0000CC) {
+					e = new Turret(xx * GRID_SIZE, yy * GRID_SIZE, Color.BLUE);
 					e.x += GRID_SIZE / 2;
 					e.y += GRID_SIZE / 2;
 					enemies.push(e);

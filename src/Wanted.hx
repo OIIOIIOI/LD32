@@ -19,6 +19,7 @@ class Wanted extends Entity {
 	var theType:String;
 	
 	var bg:Image;
+	var bg2:Image;
 	var pseudoTF:Text;
 	var descTF:Text;
 	var valueTF:Text;
@@ -28,7 +29,15 @@ class Wanted extends Entity {
 		
 		theType = t;
 		
-		bg = new Image("img/level_wanted.png");
+		bg2 = new Image("img/level_wanted2x3.png");
+		bg2.centerOrigin();
+		bg2.originY -= 10;
+		bg2.color = 0;
+		bg2.alpha = 0.2;
+		//bg.angle = rotation;
+		addGraphic(bg2);
+		
+		bg = new Image("img/level_wanted2x3.png");
 		bg.centerOrigin();
 		//bg.angle = rotation;
 		addGraphic(bg);
@@ -69,7 +78,7 @@ class Wanted extends Entity {
 	}
 	
 	function fail (e:Event) {
-		var pseudo:String = (theType == T_SCORE) ? "NO CONNECTION" : "NO CONNECTION";
+		var pseudo:String = (theType == T_SCORE) ? "CAN'T REACH" : "THE SERVER";
 		var value:Int = 0;
 		var rotation = Std.random(4) + 2;
 		if (theType == T_SCORE)	rotation = -rotation;
@@ -99,7 +108,7 @@ class Wanted extends Entity {
 		
 		var rotation = Std.random(4) + 2;
 		if (theType == T_SCORE)	rotation = -rotation;
-		bg.angle = pseudoTF.angle = descTF.angle = valueTF.angle = rotation;
+		bg2.angle = bg.angle = pseudoTF.angle = descTF.angle = valueTF.angle = rotation;
 		
 		pseudoTF.text = pseudo;
 		pseudoTF.centerOrigin();

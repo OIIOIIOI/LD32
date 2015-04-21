@@ -1,5 +1,6 @@
 package ;
 
+import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import flash.events.Event;
 import flash.events.IOErrorEvent;
@@ -25,17 +26,18 @@ class ScoreMan {
 		score = 0;
 		combo = 1;
 		chain = 0;
-		comboSteps = [0, 1, 2, 3, 4, 5];
+		comboSteps = [0, 2, 5, 9, 13, 19];
 	}
 	
-	static public function awardShot (e:Enemy) {
+	static public function awardShot (e:Entity, white:Bool = false) {
 		chain++;
 		if (chain >= comboSteps[combo]) {
 			combo++;
 			// Update GUI
 			cast(HXP.scene, Protrotrype).scoreText.setCombo(combo);
 		}
-		var pts = 1234 * combo;
+		var pts = 101 * combo;
+		if (white)	pts = 164 * combo;
 		score += pts;
 		// Spawn hit text
 		HXP.scene.add(new HitText(e.centerX, e.top, Std.string(pts)));

@@ -50,7 +50,7 @@ class FakeEnemy extends Enemy {
 		centerOrigin();
 	}
 	
-	override function getHurt ()  {
+	override function getHurt (white:Bool = false)  {
 		SoundMan.playerImpact();
 	}
 	

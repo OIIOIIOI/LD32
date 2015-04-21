@@ -108,6 +108,7 @@ class SoundMan {
 		//volFilter = new VolumeFilter();
 		musicSFX.filters = [lowpass];
 		mainTransform = new SoundTransform();
+		mainTransform.volume = 0.3 * MUSIC_VOL;
 	}
 	
 	public static function setMusicVol (v:Float) {
@@ -129,7 +130,7 @@ class SoundMan {
 		menuOptions.volume = menuOptions.volume / MUSIC_VOL * v;
 		menuCredits.volume = menuCredits.volume / MUSIC_VOL * v;
 		//musicSFX.volume = musicSFX.volume / MUSIC_VOL * v;
-		mainTransform.volume = 0.2 * v;
+		mainTransform.volume = 0.3 * v;
 		//if (musicSFX != null && musicSFX.soundChannel != null)	musicSFX.soundChannel.soundTransform = mainTransform;
 	}
 	

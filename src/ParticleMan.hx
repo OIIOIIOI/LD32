@@ -74,7 +74,7 @@ class ParticleMan extends Entity {
 		walkEmitter.emitInCircle("desert_walk_part", e.centerX, e.bottom + 4, 8);
 	}
 	
-	public function bloodStains (e:Enemy) {
+	public function bloodStains (e:Entity) {
 		bloodEmitter.setMotion("a", 0, 0, 5);
 		bloodEmitter.setMotion("b", 0, 0, 5);
 		bloodEmitter.setMotion("c", 0, 0, 5);

@@ -102,7 +102,7 @@ class LevelScreen extends Scene {
 		// Add splash elements
 		add(background);
 		add(scoreWanted);
-		add(timeWanted);
+		//add(timeWanted);
 		add(number);
 		add(bar);
 		add(title);
@@ -117,9 +117,9 @@ class LevelScreen extends Scene {
 		super.update();
 		
 		background.x = HXP.scaleClamp(mouseX, 0, 1000, 510, 490);//20
-		scoreWanted.x = HXP.scaleClamp(mouseX, 0, 1000, 260, 240);//20
+		number.x = HXP.scaleClamp(mouseX, 0, 1000, 360, 340);//20
 		timeWanted.x = HXP.scaleClamp(mouseX, 0, 1000, 760, 740);//20
-		number.x = HXP.scaleClamp(mouseX, 0, 1000, 515, 485);//30
+		scoreWanted.x = HXP.scaleClamp(mouseX, 0, 1000, 715, 685);//30
 	}
 	
 	function selectNext (delta:Int) {

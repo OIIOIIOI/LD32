@@ -43,6 +43,8 @@ class Protrotrype extends Scene {
 	public function new () {
 		super();
 		
+		HXP.screen.color = 0xa53c34;
+		
 		gameRunning = false;
 		
 		// Particles
@@ -209,14 +211,20 @@ class Protrotrype extends Scene {
 		// Stop the game
 		gameRunning = false;
 		
-		reset();
-		
 		// Get the mouse back
-		/*remove(cursor);
+		remove(cursor);
 		Mouse.show();
 		
-		// Capture?
 		var bd = HXP.buffer.clone();
+		
+		if (win) LevelMan.index++;
+		
+		HXP.screen.color = 0xffffff;
+		removeAll();
+		HXP.scene = new GameOverScreen(win, bd);
+		
+		// Capture?
+		/*var bd = HXP.buffer.clone();
 		
 		removeAll();
 		

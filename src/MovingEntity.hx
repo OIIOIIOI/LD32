@@ -48,4 +48,8 @@ class MovingEntity extends Entity {
 		return health <= 0;
 	}
 	
+	public function clone () :MovingEntity {
+		return new MovingEntity(x, y);
+	}
+	
 }

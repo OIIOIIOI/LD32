@@ -18,11 +18,11 @@ class Game extends Engine {
 	public function new () {
 		super(1000, 600);
 		
-		HXP.console.enable();
+		/*HXP.console.enable();
 		HXP.console.debugDraw = true;
-		HXP.console.toggleKey = Key.TAB;
+		HXP.console.toggleKey = Key.TAB;*/
 		
-		HXP.screen.color = 0xAF8F69;
+		HXP.screen.color = 0xFFFFFF;
 		
 		Input.define("up", [Key.UP, Key.Z, Key.W]);
 		Input.define("right", [Key.RIGHT, Key.D]);
@@ -36,11 +36,11 @@ class Game extends Engine {
 		SoundMan.playMenuMood();
 		//SoundMan.playMusic();
 		
-		//HXP.scene = new SplashScreen();
+		HXP.scene = new SplashScreen();
 		//HXP.scene = new Protrotrype();
 		//HXP.scene = new CreditsScreen();
 		//HXP.scene = new OptionsScreen();
-		HXP.scene = new LevelScreen();
+		//HXP.scene = new LevelScreen();
 	}
 	
 	override public function update () {
