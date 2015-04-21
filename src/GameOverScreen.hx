@@ -110,7 +110,7 @@ class GameOverScreen extends Scene {
 		SoundMan.nav(true);
 		SoundMan.setFilter(22000);
 		removeAll();
-		HXP.scene = new Protrotrype();
+		HXP.scene = new Protrotrype(false);
 	}
 	
 	function quit () {

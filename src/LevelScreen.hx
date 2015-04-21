@@ -146,7 +146,7 @@ class LevelScreen extends Scene {
 		SoundMan.playMenuLevel(true);
 		SoundMan.playMenuMood(true);
 		removeAll();
-		HXP.scene = new Protrotrype();
+		HXP.scene = new Protrotrype(true);
 	}
 	
 	function goBack () {

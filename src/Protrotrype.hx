@@ -40,7 +40,7 @@ class Protrotrype extends Scene {
 	
 	public var scoreText:ScoreText;
 	
-	public function new () {
+	public function new (startMusic:Bool) {
 		super();
 		
 		HXP.screen.color = 0xa53c34;
@@ -55,12 +55,12 @@ class Protrotrype extends Scene {
 		//level = new LevelExt(loaded);
 		//level = new Level(LevelMan.index, true);
 		level = new Level(LevelMan.index);
-		loaded();
+		loaded(startMusic);
 	}
 	
 	var ready:Bool;
 	
-	function loaded () {
+	function loaded (startMusic:Bool) {
 		// Add blood layer
 		bloodLayer = new Entity(0, 0, particles.bloodEmitter);
 		
@@ -73,7 +73,7 @@ class Protrotrype extends Scene {
 		scoreText.y = camera.y;
 		
 		// Music
-		if (SoundMan.musicSFX.soundChannel == null)	SoundMan.playMusic();// TODO check if already playing from previous level
+		if (startMusic)	SoundMan.playMusic();// TODO check if already playing from previous level
 		
 		// Reset
 		reset();
